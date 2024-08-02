@@ -1,0 +1,88 @@
+week_1
+computers -> 0 and 1 
+how to deals with 0 and 1 
+0 == f == N
+1 == T == Y
+
+what can we do with 0 and 1 
+    boolean operations
+        AND
+        OR
+        NOT
+    Boolean expressions
+        composition of boolean expresions
+    boolean functions 
+        is boolean expresion with parameters
+
+Any boolean function can be represented using nand operations
+
+is demonstrated from a truth table that taking the 1 values of the rows
+it will be a comb of (x and y) or (z and t) ......
+
+So we need to demonstrate that nand can be either and, not and or
+
+so we know that 
+
+(x or y) == not(x) and not(y)
+
+so now we know that or can be expressed with not and "and" operations
+
+and then keeping in mind that nand == not(x and y)
+so if and is 
+
+---AND---
+
+x|y|r
+0|0|0
+0|1|0
+1|0|0
+1|1|1
+
+---NAND---
+x|y|r
+0|0|1
+0|1|1
+1|0|1
+1|1|0
+
+so now 
+
+NOT(x) == (x nand x)
+
+and now that we know that or could be represented and not could be represented as well we can demonstrate 
+and
+
+(x AND y) == NOT(x NAND y)
+
+(x AND y) == (x NAND y) NAND (x NAND y)
+
+for demonstrating it a table can be done
+
++---+---+-----------------+----------+---------+
+| x | y | (x nand y) as t | t nand t | x and y |
++---+---+-----------------+----------+---------+
+| 0 | 0 | 1               | 0        | 0       |
++---+---+-----------------+----------+---------+
+| 0 | 1 | 1               | 0        | 0       |
++---+---+-----------------+----------+---------+
+| 1 | 0 | 1               | 0        | 0       |
++---+---+-----------------+----------+---------+
+| 1 | 1 | 0               | 1        | 1       |
++---+---+-----------------+----------+---------+
+
+perfect just with nand everything can be done -- boolean logic
+
+---------------------------
+
+Before this boolean functions, now encapsulating this in chips will be the next step
+
+Logic gates -> 
+    -> stand alone chip that give a functionalitie
+    -> interface answers the question what
+     
+HDL hardware description languague
+
+interface == unique
+implementatin => varies
+
+
