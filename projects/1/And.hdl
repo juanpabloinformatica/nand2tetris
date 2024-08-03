@@ -5,11 +5,15 @@
 /**
  * And gate:
  * if (a and b) out = 1, else out = 0 
+ (x and y) == not(x nand y)
+(x NAND y) NAND (x NAND y)
  */
+ 
 CHIP And {
     IN a, b;
     OUT out;
-    
     PARTS:
+    Nand(a=a,b=b,out=outA);
+    Nand(a=outA,b=outA,out=out);
     //// Replace this comment with your code.
 }

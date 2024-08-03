@@ -24,6 +24,8 @@ So we need to demonstrate that nand can be either and, not and or
 so we know that 
 
 (x or y) == not(x) and not(y)
+         == (x nand x) and (y nand y)
+         == 
 
 so now we know that or can be expressed with not and "and" operations
 

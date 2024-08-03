@@ -5,11 +5,71 @@
 /** 
  * Multiplexor:
  * if (sel = 0) out = a, else out = b
+ Think abt this
+ this is a conditional in circuits logic world
+ +---+---+-----+-----+
+| a | b | sel | out |
++---+---+-----+-----+
+| 0 | 0 | 0   | 0   |
++---+---+-----+-----+
+| 0 | 0 | 1   | 0   |
++---+---+-----+-----+
+| 0 | 1 | 0   | 0   |
++---+---+-----+-----+
+| 0 | 1 | 1   | 1   |
+|   |   |     |     |
++---+---+-----+-----+
+| 1 | 0 | 0   | 1   |
++---+---+-----+-----+
+| 1 | 0 | 1   | 0   |
++---+---+-----+-----+
+| 1 | 1 | 0   | 1   |
++---+---+-----+-----+
+| 1 | 1 | 1   | 1   |
++---+---+-----+-----+
+
++---+---+-----+-----+
+| 0 | 1 | 1   | 1   |
++---+---+-----+-----+
+| 1 | 0 | 0   | 1   |
++---+---+-----+-----+
+| 1 | 1 | 0   | 1   |
++---+---+-----+-----+
+| 1 | 1 | 1   | 1   |
++---+---+-----+-----+
+
+this == > 
+(not(a) and b and sel))or
+(a and not(b)and not(sel)or
+(a and b and not(sel))or
+(a and b and sel)
  */
 CHIP Mux {
     IN a, b, sel;
     OUT out;
 
     PARTS:
-    //// Replace this comment with your code.
+////
+    Not(in=a,out=out1);
+    And(a=b,b=sel,out=out2);
+    And(a=out1,b=out2,out=out3);
+////
+////
+    Not(in=b,out=out4);
+    Not(in=sel,out=out5);
+    And(a=out4,b=out5,out=out6);
+    And(a=a,b=out6,out=out7);
+////
+    Or(a=out3,b=out7,out=out13);
+//// out8 == out5
+    Not(in=sel,out=out8); 
+    And(a=b,b=out8,out=out9);
+    And(a=a,b=out9,out=out10);
+////
+    Or(a=out13,b=out10,out=out14);
+////
+    And(a=b,b=sel,out=out11);
+    And(a=a,b=out11,out=out12);
+////
+    Or(a=out14,b=out12,out=out);
 }

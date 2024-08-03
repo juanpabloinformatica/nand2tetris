@@ -5,11 +5,20 @@
 /**
  * Or gate:
  * if (a or b) out = 1, else out = 0 
+ Not(Not(x or y)) == (x or y)
+ Not(Not(x) and Not(y)) == (x or y)
+ This was correct the problem was the out at the end == out
  */
 CHIP Or {
     IN a, b;
     OUT out;
 
     PARTS:
+     Not(in=a,out=outa);
+     Not(in=b,out=outb);
+     And(a=outa,b=outb,out=outc);
+     Not(in=outc,out=out);
     //// Replace this comment with your code.
+
+
 }

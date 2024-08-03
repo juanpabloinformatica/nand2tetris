@@ -5,11 +5,21 @@
 /**
  * Exclusive-or gate:
  * if ((a and Not(b)) or (Not(a) and b)) out = 1, else out = 0
+    | a | b |out|
+    | 0 | 0 | 0 |
+    | 0 | 1 | 1 |
+    | 1 | 0 | 1 |
+    | 1 | 1 | 0 |
  */
 CHIP Xor {
     IN a, b;
     OUT out;
 
     PARTS:
+    Not(in=b,out=out1);
+    And(a=a,b=out1,out=out2);
+    Not(in=a,out=out3);
+    And(a=out3,b=b,out=out4);
+    Or(a=out2,b=out4,out=out);
     //// Replace this comment with your code.
 }
