@@ -87,4 +87,9 @@ HDL hardware description languague
 interface == unique
 implementatin => varies
 
+Why do we need Or8way gate????
 
+ I forgot i had mux16 but i want to uderstand why nested mux can give the result of a mux16 how the bits are added check that?
+ the bits are added because in the out we place bit by bit using out[x]
+ for example a[0] and b[0] if we want to keep a we do sel 0 and will take that bit of a an put it in out[0]
+end ----- Project 1 ------
