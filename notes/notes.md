@@ -1,18 +1,26 @@
-week_1
-computers -> 0 and 1 
-how to deals with 0 and 1 
+# Description
+
+This are the notes for the course nand2tetris, idea is understanding how computer works
+here is an overall image of the course
+
+[!overall course](./img/nand2tetrisOverall.png)
+
+# week_1
+
+computers -> 0 and 1
+how to deals with 0 and 1
 0 == f == N
 1 == T == Y
 
-what can we do with 0 and 1 
-    boolean operations
-        AND
-        OR
-        NOT
-    Boolean expressions
-        composition of boolean expresions
-    boolean functions 
-        is boolean expresion with parameters
+what can we do with 0 and 1
+boolean operations
+AND
+OR
+NOT
+Boolean expressions
+composition of boolean expresions
+boolean functions
+is boolean expresion with parameters
 
 Any boolean function can be represented using nand operations
 
@@ -21,16 +29,16 @@ it will be a comb of (x and y) or (z and t) ......
 
 So we need to demonstrate that nand can be either and, not and or
 
-so we know that 
+so we know that
 
 (x or y) == not(x) and not(y)
-         == (x nand x) and (y nand y)
-         == 
+== (x nand x) and (y nand y)
+==
 
 so now we know that or can be expressed with not and "and" operations
 
 and then keeping in mind that nand == not(x and y)
-so if and is 
+so if and is
 
 ---AND---
 
@@ -47,11 +55,11 @@ x|y|r
 1|0|1
 1|1|0
 
-so now 
+so now
 
 NOT(x) == (x nand x)
 
-and now that we know that or could be represented and not could be represented as well we can demonstrate 
+and now that we know that or could be represented and not could be represented as well we can demonstrate
 and
 
 (x AND y) == NOT(x NAND y)
@@ -63,25 +71,25 @@ for demonstrating it a table can be done
 +---+---+-----------------+----------+---------+
 | x | y | (x nand y) as t | t nand t | x and y |
 +---+---+-----------------+----------+---------+
-| 0 | 0 | 1               | 0        | 0       |
+| 0 | 0 | 1 | 0 | 0 |
 +---+---+-----------------+----------+---------+
-| 0 | 1 | 1               | 0        | 0       |
+| 0 | 1 | 1 | 0 | 0 |
 +---+---+-----------------+----------+---------+
-| 1 | 0 | 1               | 0        | 0       |
+| 1 | 0 | 1 | 0 | 0 |
 +---+---+-----------------+----------+---------+
-| 1 | 1 | 0               | 1        | 1       |
+| 1 | 1 | 0 | 1 | 1 |
 +---+---+-----------------+----------+---------+
 
 perfect just with nand everything can be done -- boolean logic
 
----------------------------
+---
 
 Before this boolean functions, now encapsulating this in chips will be the next step
 
-Logic gates -> 
-    -> stand alone chip that give a functionalitie
-    -> interface answers the question what
-     
+Logic gates ->
+-> stand alone chip that give a functionalitie
+-> interface answers the question what
+
 HDL hardware description languague
 
 interface == unique
@@ -89,7 +97,17 @@ implementatin => varies
 
 Why do we need Or8way gate????
 
- I forgot i had mux16 but i want to uderstand why nested mux can give the result of a mux16 how the bits are added check that?
- the bits are added because in the out we place bit by bit using out[x]
- for example a[0] and b[0] if we want to keep a we do sel 0 and will take that bit of a an put it in out[0]
+I forgot i had mux16 but i want to uderstand why nested mux can give the result of a mux16 how the bits are added check that?
+the bits are added because in the out we place bit by bit using out[x]
+for example a[0] and b[0] if we want to keep a we do sel 0 and will take that bit of a an put it in out[0]
 end ----- Project 1 ------
+
+## Project 2
+
+### ALU
+
+Von neumman computer architecture
+[!Computer architecture](./img/VonNeumannArch.png)
+
+Writting alu
+

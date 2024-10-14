@@ -28,7 +28,7 @@
 
 CHIP ALU {
     IN  
-        x[16], y[16],  // 16-bit inputs        
+        x[16], y[16],  // 16-bit inputs         
         zx, // zero the x input?
         nx, // negate the x input?
         zy, // zero the y input?
@@ -39,7 +39,9 @@ CHIP ALU {
         out[16], // 16-bit output
         zr,      // if (out == 0) equals 1, else 0
         ng;      // if (out < 0)  equals 1, else 0
-
     PARTS:
+
+    
+
     //// Replace this comment with your code.
 }
