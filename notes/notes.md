@@ -111,3 +111,63 @@ Von neumman computer architecture
 
 Writting alu
 
+### Project 3
+
+## Sequential logic
+
+- Before doing combinational logic
+
+  - The meaning of time was not existant
+
+- We need time
+
+  - Same hardware for compute the same thing (resuse hardware).
+  - **Remember things** for the pass (intermediate result ).
+  - Deal with speed.
+
+- Convert continous physical time to descript time
+- Good image explaining this
+
+  - [!image the clock](./img/theclock.png)
+
+- The delays are considered and handled by the clock frequence
+
+- So before combinatorial logic -> out[t] = function(in[t])
+- Now is sequential logic -> state[t] = function(in[t-1])
+- So basically sequential depend on present inputs + past outputs (a counter is a good example) ==> Flip Flops (Needs a memory)
+
+## Flip Flops
+
+- This will create the missing part to keep the previous output
+
+## How everything will be design from now
+
+- Basically for building the future gates, for different functionalities
+- This will be the settup
+- [! sequential logic implementtion](./img/sequentialLogic.png)
+
+## Memory units
+
+- Memory
+
+  - Main memory RAM
+  - Secondary memory: disk,..
+  - Volatile/non-volatile???
+
+- Ram
+
+  - Data (of a program)
+  - Instructions (of a program)
+
+- Perspectives
+  - Physical
+  - **Logical**
+- logical considerations
+- Ram unit
+- Before RAM there is register
+- Register
+
+  - load + mutex + d flip-flop == register
+
+- A register image:
+  - [!1 bit register image](./img/dflipflop1bitregister.png)
