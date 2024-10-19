@@ -7,11 +7,19 @@
  * If load is asserted, the value of the register selected by
  * address is set to in; Otherwise, the value does not change.
  * The value of the selected register is emitted by out.
+ * So given k ==> address, that register located at that position has to be used
+ * I am using a paper to think in the different parts
  */
 CHIP RAM8 {
     IN in[16], load, address[3];
     OUT out[16];
-
     PARTS:
+    -- DMux8Way16(in=in,sel=address,out=outDmux);
+    --DMux need to receive more bits
+
+    -- Mux8Way16
+
+
     //// Replace this comment with your code.
 }
+
