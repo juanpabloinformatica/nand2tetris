@@ -14,12 +14,17 @@ CHIP RAM8 {
     IN in[16], load, address[3];
     OUT out[16];
     PARTS:
-    -- DMux8Way16(in=in,sel=address,out=outDmux);
-    --DMux need to receive more bits
 
-    -- Mux8Way16
-
-
+    DMux16Way8(in=in,sel=address,a=a1,b=b1,c=c1,d=d1,e=e1,f=f1,g=g1,h=h1);
+    Register(in=a1,load=load,out=out1);
+    Register(in=b1,load=load,out=out2);
+    Register(in=c1,load=load,out=out3);
+    Register(in=d1,load=load,out=out4);
+    Register(in=e1,load=load,out=out5);
+    Register(in=f1,load=load,out=out6);
+    Register(in=g1,load=load,out=out7);
+    Register(in=h1,load=load,out=out8);
+    Mux8Way16(a=out1,b=out2,c=out3,d=out4,e=out5,f=out6,g=out7,h=out8,sel=address,out=out);
     //// Replace this comment with your code.
 }
 
