@@ -12,7 +12,14 @@
 CHIP PC {
     IN in[16],inc, load, reset;
     OUT out[16];
-    
+
     PARTS:
-    //// Replace this comment with your code.
+    Register(in=out4,load=true,out=out , out=outR);
+    //// if sel == 0 -> a is taken
+    //// if sel == 1 -> b is taken
+    Mux16(a=outR,b=false,sel=reset,out=out1);
+    Mux16(a=out1,b=in,sel=load,out=out2);
+    Inc16(in=outR,out=out3);
+    Mux16(a=out2,b=out3,sel= inc,out=out4);
+    ////Replace this comment with your code.
 }
