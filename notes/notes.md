@@ -171,3 +171,92 @@ Writting alu
 
 - A register image:
   - [!1 bit register image](./img/dflipflop1bitregister.png)
+
+## Machine languague (week4)
+
+- What we can do with the computer.
+- Computers can do many things.
+- Von Neuman, we can put the software in the hardware.
+- We are going to handle machine languaue, modern programming languagues
+- Takes the code and the compiler translate it to machine languague
+- Machine languagues (sequences of bits ==> 110010101...)
+- Is good to use Mnemonics -> assembly languaue
+- So basically what happens is that we are going to use a tool (an assembler ) that
+  will do a translation of nmenonics that makes easier to code in machine languague, then this tool
+- Will translate this to bits 0 or 1s.
+- Machine languague is one if not the most importance interface, due to its give us the
+  possibility to interact between software and hardware.
+- Memory hierarchy
+  - Accessing memory location is costly
+  - From quicker to longer, from shorter to bigger
+  - cpu => registers -> cache -> main memory -> disk
+  - Registers smallest memory unit
+  - CPU usually contain a few easily accessed "registers".
+  - Data registers
+    - Add R1,R2
+  - Address registers
+    - Store R1,@A
+  - Addressing modes
+    - Register
+      - Add R1, R2 -> R2=R2+R1
+    - Direct
+      - Add R1,M[200] -> Mem[200] = Mem[200] + R1
+    - Indirect
+      - Add R1,@A -> Mem[A] = Mem[A] + R1
+    - Immediate
+      - Add 73, R1 -> R1=R1+73
+  - Flow control
+    - Usually CPU executes instructions in sequence
+    - Sometimes we need to jump unconditionally
+    - Jump for simulating loops (We can use labels taking advantage of assebly)
+    - Jump with condition can simulte if else
+- # The hack machine languague
+
+  - Hardware design and machine languague design goes by hand.
+  - Hack computer -> instruction memory -> CPU -> data memory.
+  - Data memory -> RAM -> sequence of 16 bit registers
+  - Instruction memory -> separtae memory space -> (ROM) sequence of 16 bits registers.
+  - CPU -> is able to perform instructions thanks to ALU
+  - Instruction bus/ data bus/address buses -> moves the data through RAM = CPU = ROM
+  - How we control this computer -> with software -> Machine languague.
+  - Hack machine language
+    - 16 bit A- instructions
+    - 16 bit C- instructions
+  - Hack program is a sequence of instructions written in the hack machine languague.
+  - The computer has a reset button.
+  - # Control:
+    - The ROM (instruction memory) is loaded with a Hack program. (how the program is loaded into the ROM?)
+    - the reset button is pushed
+    - the program starts running
+  - The hack computer has
+
+    - CPU -> A register -> holds 16 bit value (data value or address)
+      -> D register -> holds 16 bit value
+      RAM -> M register -> M represents the 16 bit RAM register addresed by A
+
+  - The A instruction
+    - Syntax @value
+    - Semantics
+      - Sets the A register to value
+      - **Side effect: RAM[A] becomes the selected RAM register.**
+    - example
+      - @21
+        -> the A register is setted to 21
+      - the RAM[21] becomes the selected RAM register
+      - // Set RAM[100] to -1
+        @100 // 1 = 100
+        Register a = 100
+        RAM[100] is in M
+        m = -1
+  - The C instruction
+    - dest = comp; jump (both dest and jump are optional)
+    - store or jump
+    - comp: -> 0, 1, -1, D, A ............
+    - dest = null, M, D, MD, A AM, AD, AMD -> more than one is storing simultaneously. -> M -> refers to RAM[A]
+    - jump: null, JGT, JEQ, JGE, JLT, JNE, JLE, JMP -> if (comp jump 0) jump to execute the instruction in ROM[A] -> those 8 possible conditions , they always compare the result of the computation to zero.
+    - If the boolean expression (comp jump 0) is true, jumps to execute the instruction stored in ROM[A].
+    - # Example
+      - // if (D-1==0) jump to execute the instruction stored in ROM[56]
+
+- # Pointers
+  -
