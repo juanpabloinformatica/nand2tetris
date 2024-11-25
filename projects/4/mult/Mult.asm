@@ -11,28 +11,47 @@
 // so I have to multiplied what is in register0 and what is in register2 and put it in register2
 // as I don't have * I can do a simulation with a for loop
 
-@sum
-M=0
+
+@0
+  D=A
 @i
-M=1
+  M=D // i = 0
+@0
+  D=A
+@sum
+  M=D // sum =0
+@R1
+  D=M
+@n
+  M=D
+@0
+  D=A
+// if not done, the test doesn't pass
+@R2
+  M=D
 (LOOP)
-    @i
-    D=M
-    @R1
-    D = A -
-    @STOP
-
-    @sum
-    D=M
-    @i
-    M=M+1
-    @LOOP
-    0;JMP
-
-
-
+  @n
+  D=M
+  @i
+  D=D-M
+  @STOP
+  D;JLE
+  @R0
+  D=M
+  @sum
+  M=M+D
+  @i
+  M=M+1
+  @LOOP
+  0;JMP
 (STOP)
+  @sum
+  D=M
+  @R2
+  M=D
 (END)
+  @END
+  0;JMP
 
 
 
