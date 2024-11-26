@@ -15,6 +15,7 @@
   D=M
   @FALSE
   D;JEQ
+  (POSITIVE) // a key is pressed so the screen needs to be dark
   @0
   D=A
   @i
@@ -29,7 +30,7 @@
   D=M
   @i
   D=D-M
-  @FALSE
+  @RESTART
   D;JLE
   @i
   D=M
@@ -41,6 +42,33 @@
   @LOOP2
   0;JMP
 (FALSE)
+  // clean
+  @0
+  D=A
+  @i
+  M=D
+  // area of the screen
+  @8192
+  D=A
+  @n
+  M=D
+  (LOOP3)
+  @n
+  D=M
+  @i
+  D=D-M
+  @RESTART
+  D;JLE
+  @i
+  D=M
+  @SCREEN
+  A=D+A
+  M=0
+  @i
+  M=M+1
+  @LOOP3
+  0;JMP
+  (RESTART)
   @LOOP1
   0;JMP
 
