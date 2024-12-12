@@ -1,6 +1,8 @@
 # Description
 
-This are the notes for the course nand2tetris, idea is understanding how computer works
+This are the notes for the course nand2tetris, idea is understanding how computer
+works
+
 here is an overall image of the course
 
 [!overall course](./img/nand2tetrisOverall.png)
@@ -182,10 +184,13 @@ Writting alu
 - Machine languagues (sequences of bits ==> 110010101...)
 - Is good to use Mnemonics -> assembly languaue
 - So basically what happens is that we are going to use a tool (an assembler ) that
-  will do a translation of nmenonics that makes easier to code in machine languague, then this tool
+  will do a translation of nmenonics that makes easier
+  to code in machine languague, then this tool
+
 - Will translate this to bits 0 or 1s.
-- Machine languague is one if not the most importance interface, due to its give us the
-  possibility to interact between software and hardware.
+- Machine languague is one if not the most importance interface, due to its give
+  us the possibility to interact between software and hardware.
+
 - Memory hierarchy
   - Accessing memory location is costly
   - From quicker to longer, from shorter to bigger
@@ -260,3 +265,58 @@ Writting alu
 
 - # Pointers
   -
+
+# Chapter 5
+## Von Neumann Architecture
+
+- 
+
+- One computer can run any kind of program --> (universal turing machine)
+- How can be done the computer
+- Computer system
+  - Input
+  - Memory
+    - program memory => will contain the series of instruction
+      that will be executed one by one.
+    - data memory
+  - Cpu
+    - ALU
+      - data bus
+        - Accept numbers
+        - send numbers
+      - control bus
+        - get what kind of op need to do.
+        - Tell the other parts of the system what to do.
+    - Registers
+      - data bus
+        - Take data 
+      - address bus
+        - because the registers will store sometimes addresses
+  - Output
+- information flows (buses || wires)
+  - Data
+  - Address
+  - Data
+  - Something that I get is that the memory need to be connected
+    to the control bus because when a instruction is fetched,
+    the control unit accessible through the control bus will need
+    to decode the instruction and then tell the alu what to do
+    so we can think the control unit as intermediary between the
+    program memory and the alu.
+
+## The CPU process
+
+- the cpu follows a basic loop (fetch, decode, execute)
+- In this image What I could understood is the following
+  as the memory component has the data and the program
+  memory, it will cause a crash at the moment of
+  excecuting and fetching. So when the alu will be
+  fetching(taking the instruction 
+  (This also is passed by the unit)) this will set 
+  a flag that disable data address for getting a value
+  otherwise, the address passed to the memory will be 
+  the one for getting the value stored in the data 
+  address.
+
+![multiplex](./img/fetchCycleTemporalSolutionMutex.png "opt title")
+
