@@ -343,7 +343,7 @@ Writting alu
   outputted. (**THIS IS THE FETCH PART**)
 
 - So, then the fetch is done, the ouput instruction gotten,
-  is handled by the control unit, this one will understand the 
+  is handled by the control unit, this one will understand the
   instruction by checking its opcode, and then telling to the
   ALU what operations need to perform, besides this unit
   handle the coordination of the other components
@@ -353,22 +353,26 @@ Writting alu
 ## Project 5
 
 - So for doing this project we need to organice
-  our thoughts, so first 
+  our thoughts, so first
   - What do we have to do?
-    - build 
+    - build
       - CPU [0]
       - MEMORY [1]
       - ROM --> (already provided) [2]
       - COMPUTER == CPU + MEMORY + ROM [4]
 
-- So that is the order that I will take for 
+- So that is the order that I will take for
   build each component.
 
 ### [0]
 
+- Execute the current instruction
+- Figure out which instruction to execute next
+
 - So what do we need for building the cpu
-- First look the interface that we need to 
-  implement, for knowing what we receive and 
+
+- First look the interface that we need to
+  implement, for knowing what we receive and
   what we send
   - inputs:
     - instruction --> (Comming from the ROM)
@@ -376,10 +380,20 @@ Writting alu
     - reset ==> (input comming from external user that activates the cpu)
 
   - outputs
-    - outM --> (value outputted from the ALU, and given to the data memory) 
+    - outM --> (value outputted from the ALU, and given to the data memory)
     - writeM --> (value outputted for enabling writing in register in addressM of the data memory)
-    - 
-  
+    - addressM --> (value outputted that tell exactly what register to modify in the data memory)
+    - PC --> (value that has the address of the register that has the next instruction in the ROM)
 
+- CPU
+    - ALU --> already gotten
+    - Registers --> already gotten
+    - Control unit --> not yet
 
+- Control unit
+    - this unit will handle and coordinate the different process
+    - This units take the instruction and check the opcode, and depending it,
+      it will increment in different ways the PC, tell the ALU what to do
 
+- I am taking notes in paper I will suddenly pass it to here as an image.
+- ![How control bits will bee organie](./img/controlBitManagement.png)
