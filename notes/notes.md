@@ -215,6 +215,7 @@ Writting alu
     - Sometimes we need to jump unconditionally
     - Jump for simulating loops (We can use labels taking advantage of assebly)
     - Jump with condition can simulte if else
+
 - # The hack machine languague
 
   - Hardware design and machine languague design goes by hand.
@@ -229,7 +230,9 @@ Writting alu
     - 16 bit C- instructions
   - Hack program is a sequence of instructions written in the hack machine languague.
   - The computer has a reset button.
-  - # Control:
+
+  - # Control
+
     - The ROM (instruction memory) is loaded with a Hack program. (how the program is loaded into the ROM?)
     - the reset button is pushed
     - the program starts running
@@ -260,16 +263,20 @@ Writting alu
     - dest = null, M, D, MD, A AM, AD, AMD -> more than one is storing simultaneously. -> M -> refers to RAM[A]
     - jump: null, JGT, JEQ, JGE, JLT, JNE, JLE, JMP -> if (comp jump 0) jump to execute the instruction in ROM[A] -> those 8 possible conditions , they always compare the result of the computation to zero.
     - If the boolean expression (comp jump 0) is true, jumps to execute the instruction stored in ROM[A].
+
     - # Example
+
       - // if (D-1==0) jump to execute the instruction stored in ROM[56]
 
 - # Pointers
+
   -
 
 # Chapter 5
+
 ## Von Neumann Architecture
 
-- 
+-
 
 - One computer can run any kind of program --> (universal turing machine)
 - How can be done the computer
@@ -289,7 +296,7 @@ Writting alu
         - Tell the other parts of the system what to do.
     - Registers
       - data bus
-        - Take data 
+        - Take data
       - address bus
         - because the registers will store sometimes addresses
   - Output
@@ -311,12 +318,68 @@ Writting alu
   as the memory component has the data and the program
   memory, it will cause a crash at the moment of
   excecuting and fetching. So when the alu will be
-  fetching(taking the instruction 
-  (This also is passed by the unit)) this will set 
+  fetching(taking the instruction
+  (This also is passed by the unit)) this will set
   a flag that disable data address for getting a value
-  otherwise, the address passed to the memory will be 
-  the one for getting the value stored in the data 
+  otherwise, the address passed to the memory will be
+  the one for getting the value stored in the data
   address.
 
 ![multiplex](./img/fetchCycleTemporalSolutionMutex.png "opt title")
+
+## The fetch execute cycle
+
+- Basically in this step is explained how the cpu
+  will fetch instructions from the program memory.
+  And how it executes it.
+
+- So far we know that the program memory will have to
+  receive an input that is the address of the instruction
+  that wants to be outputted, so what needs to be done
+  is having a temporal register (pc) that will keep the
+  address of the next instruction, this will be passed
+  as input of the program memory and in that way the program
+  memory will be able to locate that actual instruction and
+  outputted. (**THIS IS THE FETCH PART**)
+
+- So, then the fetch is done, the ouput instruction gotten,
+  is handled by the control unit, this one will understand the 
+  instruction by checking its opcode, and then telling to the
+  ALU what operations need to perform, besides this unit
+  handle the coordination of the other components
+
+- The hack computer architecture
+
+## Project 5
+
+- So for doing this project we need to organice
+  our thoughts, so first 
+  - What do we have to do?
+    - build 
+      - CPU [0]
+      - MEMORY [1]
+      - ROM --> (already provided) [2]
+      - COMPUTER == CPU + MEMORY + ROM [4]
+
+- So that is the order that I will take for 
+  build each component.
+
+### [0]
+
+- So what do we need for building the cpu
+- First look the interface that we need to 
+  implement, for knowing what we receive and 
+  what we send
+  - inputs:
+    - instruction --> (Comming from the ROM)
+    - inM --> (input comming from the data memory)
+    - reset ==> (input comming from external user that activates the cpu)
+
+  - outputs
+    - outM --> (value outputted from the ALU, and given to the data memory) 
+    - writeM --> (value outputted for enabling writing in register in addressM of the data memory)
+    - 
+  
+
+
 
