@@ -35,19 +35,23 @@ CHIP CPU {
     PARTS:
 	//// Replace this comment with your code.
   //// Instruction  handling
-  //// aluOutput not yet defined **
-  //// for the second c bit i will follow this logic
+
   ////Mux16(a=instruction[1..15] , b=aluOutput[1..15] , sel=instruction[0] , out=outputFirstMux);
   Mux16(a=instruction , b=aluOutput , sel=instruction[0] , out=outputFirstMux);
-  //// 10 is the bit corresponding to d1
-  Mux(a=false,b=true,sel=instruction[10],out=outputDestinationOne);
-  Mux(a=true,b=outputDestinationOne,sel=in[0],out=outputLoadRegisterA);
-  Register(in =outputFirstMux , load =outputLoadRegisterA , out =outputAregister,out=addressM );
+  Mux(a=false,b=true,sel=instruction[10],out=getAluOutput);
+  Mux(a=true,b=getAluOutput,sel=instruction[0],out=outputC1);
+  ARegister(in =outputFirstMux , load =outputC1 , out =outputAregister,out[1..15]=addressM );
+
   //// Alu operations input
-  Mux(a=false,b=true,sel=instruction[3],out=outputACInstructioncode);
-  Mux(a=false,b=outputACInstructioncode,sel=in[0],out=outputLoadRegisterA);
-  Mux16(a=outputAregister,b=inM,sel=instruction[],out=)
+  Mux(a=false,b=true,sel=instruction[3],out=getInM);
+  Mux(a=false,b=getInM,sel=in[0],out=outputC5);
+  Mux16(a=outputAregister,b=inM,sel=outputC5,out=outputSecondMux);
+  DRegister(in=aluOutput,load=instruction[10],out=outputDregister);
+  ALU(x = outputDregister, y = outputAregister , zx = instruction[4] , nx = instruction[5] , zy = instruction[6], ny = instruction[7] , f = instruction[8] , no = instruction[9] , out =aluOutput , zr =outputZr , ng = outputNg);
+  Mux(a=true,b=false,sel=instruction[12],out=getWriteM);
+  Mux(a=false,b=getWriteM,sel=instruction[0],out=WriteM);
   //// output of Aregister is emmitted outside cpu
+
   
 
 
