@@ -1,0 +1,27 @@
+
+CHIP Testing {
+
+    IN  inM[16],         // M value input  (M = contents of RAM[A])
+        instruction[16], // Instruction for execution
+        reset;           // Signals whether to re-start the current
+                         // program (reset==1) or continue executing
+                         // the current program (reset==0).
+
+    OUT outM;        // M value output
+        ////writeM,          // Write to M? 
+        ////addressM[15],    // Address in data memory (of M)
+        ////pc[15];          // address of next instruction
+
+    PARTS:
+	//// Replace this comment with your code.
+  //// Instruction  handling
+  //// aluOutput not yet defined
+  //// for the second c bit i will follow this logic
+  //// a ==> false simulates inM
+  //// b ==> true simulates aluOutput 
+  Mux16(a=false , b=true , sel=inM[0] , out=outputFirstMux);
+  //// 10 is the bit corresponding to d1
+  Mux(a=false,b=true,sel=inM[10],out=outputDestinationOne);
+  Mux(a=true,b=outputDestinationOne,sel=inM[0],out=outM);
+  ////Register(in =outputFirstMux , load =outputLoadRegisterA , out =outM);
+}

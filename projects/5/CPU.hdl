@@ -17,6 +17,7 @@
  * instruction's execution during the current cycle. The addressM and pc outputs are
  * clocked: although they are affected by the instruction's execution, they commit to
  * their new values only in the next cycle.
+
  */
 CHIP CPU {
 
@@ -33,4 +34,21 @@ CHIP CPU {
 
     PARTS:
 	//// Replace this comment with your code.
+  //// Instruction  handling
+  //// aluOutput not yet defined **
+  //// for the second c bit i will follow this logic
+  ////Mux16(a=instruction[1..15] , b=aluOutput[1..15] , sel=instruction[0] , out=outputFirstMux);
+  Mux16(a=instruction , b=aluOutput , sel=instruction[0] , out=outputFirstMux);
+  //// 10 is the bit corresponding to d1
+  Mux(a=false,b=true,sel=instruction[10],out=outputDestinationOne);
+  Mux(a=true,b=outputDestinationOne,sel=in[0],out=outputLoadRegisterA);
+  Register(in =outputFirstMux , load =outputLoadRegisterA , out =outputAregister,out=addressM );
+  //// Alu operations input
+  Mux(a=false,b=true,sel=instruction[3],out=outputACInstructioncode);
+  Mux(a=false,b=outputACInstructioncode,sel=in[0],out=outputLoadRegisterA);
+  Mux16(a=outputAregister,b=inM,sel=instruction[],out=)
+  //// output of Aregister is emmitted outside cpu
+  
+
+
 }

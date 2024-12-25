@@ -397,3 +397,37 @@ Writting alu
 
 - I am taking notes in paper I will suddenly pass it to here as an image.
 - ![How control bits will bee organie](./img/controlBitManagement.png)
+
+# Building cpu steps
+
+## First part
+In this part I will handle.
+![instruction handling](./img/instructionHandling.png)
+- for the first C I need to take the opcode **(in[0])** of the incoming
+  instruction, in such a way I know if i am taking an A
+  instruction a save it's value in the register or the 
+  C instruction.
+
+- For the second C, I need to do multiple considerations, that can 
+  be better explained in the way of a if else condition statement
+  ```python
+  if c==0:
+    load=1
+  else:
+    if d1==1:
+      load=1
+    else:
+      load=0
+  ```
+  This can be translated to logic gates in the 
+  following manner.
+```mermaid
+graph LR
+0 --> Mux0;
+1 -->Mux0;
+SEL::*d1* --> Mux0;
+1' -->Mux2;
+Mux0 --> Mux2;
+SEL'::*c* --> Mux2;
+```
+
