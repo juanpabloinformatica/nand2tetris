@@ -1,4 +1,3 @@
-// This file is part of www.nand2tetris.org
 // and the book "The Elements of Computing Systems"
 // by Nisan and Schocken, MIT Press.
 // File name: projects/5/CPU.hdl
@@ -23,7 +22,7 @@ CHIP CPU {
     IN  inM[16],         // M value input  (M = contents of RAM[A])
         instruction[16], // Instruction for execution
         reset;           // Signals whether to re-start the current
-                         // program (reset==1) or continue executing
+                          // program (reset==1) or continue executing
                          // the current program (reset==0).
 
     OUT outM[16],        // M value output
@@ -32,26 +31,26 @@ CHIP CPU {
         pc[15];          // address of next instruction
 
     PARTS:
-	//// Replace this comment with your code.
+        //// Replace this comment with your code.
             //// Replace this comment with your code.
   //// Instruction  handling
 
-  Mux16(a=instruction , b=aluOutput , sel=instruction[15] , out[0..14]=outputFirstMux);
+  Mux16(a=instruction , b=aluOutput , sel=instruction[15] , out=outputFirstMux);
 
   Mux(a=false,b=true,sel=instruction[5],out=getAluOutput);
   Mux(a=true,b=getAluOutput,sel=instruction[15],out=outputC1);
-  ARegister(in[0..14]=outputFirstMux , load =outputC1 , out =outputAregister,out[0..14]=addressM );
+  ARegister(in=outputFirstMux , load =outputC1 , out=outputAregister,out[0..14]=addressM );
 
   //// Alu operations input
   Mux(a=false,b=true,sel=instruction[12],out=getInM);
   Mux(a=false,b=getInM,sel=instruction[15],out=outputC5);
-  Mux16(a=outputAregister,b=inM,sel=outputC5,out=outputSecondMux);
+  Mux16(a=outputAregister,b=inM,sel=outputC5,out[0..14]=outputSecondMux);
 
   Mux(a=false,b=true,sel=instruction[4],out=getAluOutput2);
   Mux(a=false,b=getAluOutput2,sel=instruction[15],out=outputC3);
-  DRegister(in[0..14]=aluOutputD,load=outputC3,out=outputDregister);
+  DRegister(in=aluOutput,load=outputC3,out[0..14]=outputDregister);
 
-  ALU(x = outputDregister, y = outputSecondMux , zx = instruction[11] , nx = instruction[10] , zy = instruction[9], ny = instruction[8] , f = instruction[7] , no = instruction[6] , out =aluOutput,out[0..14]=aluOutputD,out=outM , zr =outputZr , ng = outputNg);
+  ALU(x[0..14] = outputDregister, y[0..14] = outputSecondMux , zx = instruction[11] , nx = instruction[10] , zy = instruction[9], ny = instruction[8] , f = instruction[7] , no = instruction[6] , out =aluOutput,out=outM , zr =outputZr , ng = outputNg);
 
   Mux(a=false,b=true,sel=instruction[3],out=getWriteM);
   Mux(a=false,b=getWriteM,sel=instruction[15],out=writeM);
@@ -60,19 +59,6 @@ CHIP CPU {
 
    Xor(a = instruction[15], b = true, out = outICIns);
    Not(in =outICIns , out =outCIns );
-  //// C1
-
- ////Xor(a = instruction[2] , b = false , out =outIJ1C1);
- ////Not(in =outIJ1C1 , out = outJ1C1);
- ////Xor(a = instruction[1], b = false, out = outIJ2C1);
- ////Not(in =outIJ2C1 , out =outJ2C1 );
- ////Xor(a = instruction[0], b = false, out = outIJ3C1);
- ////Not(in =outIJ3C1 , out =outJ3C1 );
- ////Xor(a = instruction[15], b = true, out = outICInsC1);
- ////Not(in =outICInsC1 , out =outCInsC1 );
- ////And(a = outJ1C1, b =outJ2C1 , out =outFirstAndC1 );
- ////And(a = outFirstAndC1, b =outJ3C1 , out =outSecondAndC1 );
- ////And(a =outSecondAndC1 , b = outICInsC1, out =outC1 );
 
   //// C2
 
@@ -89,6 +75,7 @@ CHIP CPU {
    And(a = outJ1C2, b =outJ2C2 , out =outFirstAndC2 );
    And(a = outFirstAndC2, b =outJ3C2 , out =outSecondAndC2 );
    And(a = outSecondAndC2, b =outZrC2 , out =outThirdAndC2 );
+   ////And(a = outSecondAndC2, b =true , out =outThirdAndC2 );
    And(a = outThirdAndC2, b =outCIns , out =outFourthAndC2 );
    And(a = outFourthAndC2, b =outNgC2 , out =outC2 );
 
@@ -101,7 +88,7 @@ CHIP CPU {
    Not(in =outIJ2C3 , out =outJ2C3 );
    Xor(a = instruction[0], b = false, out = outIJ3C3);
    Not(in =outIJ3C3 , out =outJ3C3 );
-   Xor(a = outputZr ,b = true, out = outIZrC3);
+   Xor(a = outputZr ,b = true  , out = outIZrC3);
    Not(in =outIZrC3 , out =outZrC3 );
    Xor(a = outputNg , b = false , out =outINgC3);
    Not(in =outINgC3 , out = outNgC3);
@@ -110,7 +97,7 @@ CHIP CPU {
    And(a = outSecondAndC3, b =outZrC3 , out =outThirdAndC3 );
    And(a = outThirdAndC3, b =outCIns , out =outFourthAndC3 );
    And(a = outFourthAndC3, b =outNgC3 , out =outC3 );
-
+////And(a = outFourthAndC3, b =true , out =outC3 );
   //// C4
 
    Xor(a = instruction[2] , b = false , out =outIJ1C4);
@@ -119,15 +106,29 @@ CHIP CPU {
    Not(in =outIJ2C4 , out =outJ2C4 );
    Xor(a = instruction[0], b = true, out = outIJ3C4);
    Not(in =outIJ3C4 , out =outJ3C4 );
-   Xor(a = outputZr ,b = true, out = outIZrC4);
+   Xor(a = outputZr ,b = false, out = outIZrC4);
    Not(in =outIZrC4 , out =outZrC4 );
    Xor(a = outputNg , b = false , out =outINgC4);
    Not(in =outINgC4 , out = outNgC4);
+
+  //// combination part
+   Xor(a = outputZr ,b = true, out = outIZr2C4);
+   Not(in =outIZr2C4 , out =outZr2C4 );
+   Xor(a = outputNg , b = false , out =outINg2C4);
+   Not(in =outINg2C4 , out = outNg2C4);
+   ////
+   And(a=outZrC4,b=outNgC4,out=outFirstCombC4);
+   And(a=outZr2C4,b=outNg2C4,out=outSecondCombC4);
+   Or(a=outFirstCombC4,b=outSecondCombC4,out=outCombC4);
+
+ 
    And(a = outJ1C4, b =outJ2C4 , out =outFirstAndC4 );
    And(a = outFirstAndC4, b =outJ3C4 , out =outSecondAndC4 );
-   And(a = outSecondAndC4, b =outZrC4 , out =outThirdAndC4 );
-   And(a = outThirdAndC4, b =outCIns , out =outFourthAndC4 );
-   And(a = outFourthAndC4, b =outNgC4 , out =outC4 );
+   And(a = outSecondAndC4, b =outCIns , out =outThirdAndC4 );
+   And(a=outThirdAndC4,b=outCombC4,out=outC4);
+
+   ////And(a = outThirdAndC4, b =outZrC4 , out =outFourthAndC4 );
+   ////And(a = outFourthAndC4, b =outNgC4 , out =outC4 );
 
   //// C5
 
@@ -170,15 +171,28 @@ CHIP CPU {
    Not(in =outIJ2C7 , out =outJ2C7 );
    Xor(a = instruction[0], b = false, out = outIJ3C7);
    Not(in =outIJ3C7 , out =outJ3C7 );
-   Xor(a = outputZr ,b = true, out = outIZrC7);
+
+   Xor(a = outputZr ,b = false, out = outIZrC7);
    Not(in =outIZrC7 , out =outZrC7 );
-   Xor(a = outputNg , b = true , out =outINgC7);
+   Xor(a = outputNg , b = true  , out =outINgC7);
    Not(in =outINgC7 , out = outNgC7);
+
+  //// combination part
+   Xor(a = outputZr ,b = true, out = outIZr2C7);
+   Not(in =outIZr2C7 , out =outZr2C7 );
+   Xor(a = outputNg , b = false , out =outINg2C7);
+   Not(in =outINg2C7 , out = outNg2C7);
+
+   ////
+   And(a=outZrC7,b=outNgC7,out=outFirstCombC7);
+   And(a=outZr2C7,b=outNg2C7,out=outSecondCombC7);
+   Or(a=outFirstCombC7,b=outSecondCombC7,out=outCombC7);
+
    And(a = outJ1C7, b =outJ2C7 , out =outFirstAndC7 );
    And(a = outFirstAndC7, b =outJ3C7 , out =outSecondAndC7 );
-   And(a = outSecondAndC7, b =outZrC7 , out =outThirdAndC7 );
-   And(a = outThirdAndC7, b =outCIns , out =outFourthAndC7 );
-   And(a = outFourthAndC7, b =outNgC7 , out =outC7 );
+   And(a = outSecondAndC7, b =outCIns , out =outThirdAndC7 );
+   And(a = outThirdAndC7, b =outCombC7 , out =outC7 );
+   //// And(a = outFourthAndC7, b =outNgC7 , out =outC7 );
 
   //// C8
 
@@ -193,6 +207,7 @@ CHIP CPU {
    And(a =outSecondAndC8 , b = outJ3C8, out =outC8 );
 
    //// getting the load condition
+
   Or(a = false , b = outC2, out = outFirstOr);
   Or(a =outFirstOr , b =outC3 , out = outSecondOr);
   Or(a =outSecondOr , b =outC4 , out = outThirdOr);
@@ -202,9 +217,10 @@ CHIP CPU {
   Or(a =outSixthOr , b =outC8 , out = outFinalOr);
   Mux(a=false,b=true,sel=outFinalOr,out=loadOutput);
   Mux(a=true,b=false,sel=loadOutput,out=incrementerOutput);
-  ////And(a=incrementerOutput,b=outCIns,out=incrementerOutputFinal);
 
   ////
   PC(in =outputAregister , load =loadOutput , inc =incrementerOutput , reset =reset , out[0..14] =pc );
 
 }
+	
+
