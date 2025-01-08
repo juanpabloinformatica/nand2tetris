@@ -31,27 +31,24 @@ CHIP CPU {
         pc[15];          // address of next instruction
 
     PARTS:
-        //// Replace this comment with your code.
-            //// Replace this comment with your code.
-  //// Instruction  handling
-
+  //// Replace this comment with your code.
   Mux16(a=instruction , b=aluOutput , sel=instruction[15] , out=outputFirstMux);
-
   Mux(a=false,b=true,sel=instruction[5],out=getAluOutput);
   Mux(a=true,b=getAluOutput,sel=instruction[15],out=outputC1);
-  ARegister(in=outputFirstMux , load =outputC1 , out=outputAregister,out[0..14]=addressM );
+  ARegister(in=outputFirstMux , load =outputC1 , out[0..14]=outputAregister,out[0..14]=addressM );
 
-  //// Alu operations input
+ //// Alu operations input
   Mux(a=false,b=true,sel=instruction[12],out=getInM);
   Mux(a=false,b=getInM,sel=instruction[15],out=outputC5);
-  Mux16(a=outputAregister,b=inM,sel=outputC5,out[0..14]=outputSecondMux);
+  Mux16(a[0..14]=outputAregister,b=inM,sel=outputC5,out[0..14]=outputSecondMux);
 
   Mux(a=false,b=true,sel=instruction[4],out=getAluOutput2);
   Mux(a=false,b=getAluOutput2,sel=instruction[15],out=outputC3);
-  DRegister(in=aluOutput,load=outputC3,out[0..14]=outputDregister);
+  DRegister(in=aluOutput,load=outputC3,out=outputDregister);
 
-  ALU(x[0..14] = outputDregister, y[0..14] = outputSecondMux , zx = instruction[11] , nx = instruction[10] , zy = instruction[9], ny = instruction[8] , f = instruction[7] , no = instruction[6] , out =aluOutput,out=outM , zr =outputZr , ng = outputNg);
+  ALU(x= outputDregister, y[0..14] = outputSecondMux , zx = instruction[11] , nx = instruction[10] , zy = instruction[9], ny = instruction[8] , f = instruction[7] , no = instruction[6] , out =aluOutput,out[0..14]=aluOutputD,out=outM , zr =outputZr , ng = outputNg); 
 
+  //// writting or not in RAM[A]
   Mux(a=false,b=true,sel=instruction[3],out=getWriteM);
   Mux(a=false,b=getWriteM,sel=instruction[15],out=writeM);
 
