@@ -31,9 +31,9 @@ CHIP Memory {
     Add16(a[0..14]=flipMaxAddress,b[0..14]=true,out[0..14]=maxAddress2complement);
     */
     /*Testing value*/
-    /*16383*/
+    /*16383   ---> this should be allowed*/
     Not16(in[14..15]=true,in[0..13]=false,out=testOutput);
-    /*25000*/
+    /*25000 ---> this should be NOT allowed*/
     Not16(in[15]=true,in[13..14]=false,in[9..12]=true,in[7..8]=false,in[6]=true,in[4]=true,in[0..2]=true,out=testOutput2);
 
     Not16(in[15]=true,in[13..14]=false,in[0..12]=true,out=maxAddress);
@@ -41,12 +41,37 @@ CHIP Memory {
     Add16(a=flipMaxAddress,b[0]=true,b[1..15]=false,out=maxAddress2complement);
 
 
-/*Att*/
-    Add16(a=maxAddress,b=maxAddress2complement,out[15]=errorHandlerOutputMb,out[0..7]=errorHandlerOutputFP,out[8..15]=errorHandlerOutputSP);
+/*Att
+     testOutput ---> this should be allowed
+     maxAddress ---> this should be allowed
+     testOutput2 ---> this should be Not allowed
+     
+*/
+    Add16(a=testOutput2,b=maxAddress2complement,out[14]=errorHandlerOutputMb,out[0..7]=errorHandlerOutputFP,out[8..14]=errorHandlerOutputSP);
     Or8Way(in=errorHandlerOutputFP,out=isZeroFP);
     Or8Way(in=errorHandlerOutputFP,out=isZeroSP);
     Or(a=isZeroFP,b=isZeroSP,out=isZeroFinal);
     Mux(a=true,b=false,sel=isZeroFinal,out=isZeroOutput);
-    Mux(a=isZeroOutput,b=false,sel=errorHandlerOutputMb,out=keepGoingOutput);
+    Mux(a=isZeroOutput,b=true,sel=errorHandlerOutputMb,out=keepGoingOutput);
+
+  /*Logic handling I did already the design in a piece of paper*/
+  /*max_data --> 0x4000*/
+  Not16(in[15]=true,in[14]=false,in[0..13]=true,out=maxData);
+  /*maxScreen --> 0x5FFF*/
+  Not16(in[15]=true,in[13..14]=false,in[0..12]=true,out=maxScreen);
+  /*toRam --> output 00*/
+  Not16(in[0..15]=true,out=toRam);
+  /*toScreen --> 01*/
+  Not16(in[15]=true,in[0]=false,in[1]=true,in[2..14]=true,out=toScreen);
+  /*toKeyboard --> 10*/
+  Not16(in[15]=true,in[0]=true,in[1]=false,in[2..14]=true,out=toKeyboard);
+  /*Muxes to get the correct chip*/
+  Mux16(a = toKeyboard , b =toScreen , sel = inScreenComparison, out =screenOrKeyboard );
+  Mux16(a = screenOrKeyboard , b =toRam , sel = inRamComparison, out =RamOrscreenOrKeyboard );
+
+
+
+  
+
 	//// Replace this comment with your code.
 }
