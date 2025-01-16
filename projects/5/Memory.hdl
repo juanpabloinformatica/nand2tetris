@@ -1,3 +1,129 @@
+//// This file is part of www.nand2tetris.org
+//// and the book "The Elements of Computing Systems"
+//// by Nisan and Schocken, MIT Press.
+//// File name: projects/5/Memory.hdl
+///**
+// * The complete address space of the Hack computer's memory,
+// * including RAM and memory-mapped I/O.
+// * The chip facilitates read and write operations, as follows:
+// *     Read:  out(t) = Memory[address(t)](t)
+// *     Write: if load(t-1) then Memory[address(t-1)](t) = in(t-1)
+// * In words: the chip always outputs the value stored at the memory
+// * location specified by address. If load=1, the in value is loaded
+// * into the memory location specified by address. This value becomes
+// * available through the out output from the next time step onward.
+// * Address space rules:
+// * Only the upper 16K+8K+1 words of the Memory chip are used.
+// * Access to address>0x6000 is invalid and reads 0. Access to any address
+// * in the range 0x4000-0x5FFF results in accessing the screen memory
+// * map. Access to address 0x6000 results in accessing the keyboard
+// * memory map. The behavior in these addresses is described in the Screen
+// * and Keyboard chip specifications given in the lectures and the book.
+// */
+//CHIP Memory {
+//    IN in[16], load, address[15];
+//    OUT out[16];
+//
+//    PARTS:
+//    /*Testing value*/
+//
+//    /*16383   ---> this should be allowed*/
+//    Not16(in[14..15]=true,in[0..13]=false,out=testOutput);
+//    /*25000 ---> this should be NOT allowed*/
+//    Not16(in[15]=true,in[13..14]=false,in[9..12]=true,in[7..8]=false,in[6]=true,in[4]=true,in[0..2]=true,out=testOutput2);
+//    /* 20000 */
+//    Not16(in[15]=true,in[14]=false,in[12..13]=true,in[9..11]=false,in[6..8]=true,in[5]=true,in[0..4]=true,out=testOutput3);
+//
+//    /*---- Finish Testing value -----*/
+//
+//    /*--- Define Constants ----*/
+//
+//    Not16(in[15]=true,in[13..14]=false,in[0..12]=true,out=maxAddress);
+//    Not16(in[15]=true,in[14]=false,in[0..13]=true,out=maxData);
+//
+//    /*--- End define constants ---*/
+//
+//    /*------ Keep going -----*/
+//    /* tPrime */
+//    -- Mux(a = true , b =false , sel =testOutput1[15] , out =isNegative );
+//    Mux(a = true , b =false , sel =in[15] , out =Continue );
+//    Not16(in=maxAddress,out=flippedMaxAddress);
+//    Add16(a=flippedMaxAddress,b[0]=true,b[1..15]=false,out=twoComplementMaxAddress);
+//    Add16(a=in,b=twoComplementMaxAddress,out=diff1Result);
+//    Mux(a=false,b=diff1Result[15],sel=Continue,out=tPrime);
+//
+//    /*rPrime */
+//
+//   Or8Way(in = diff1Result[0..7], out = outOrFp );
+//   Or8Way(in[8..14] = diff1Result[8..14],in[15]=false out =outOrSp );
+//   Or(a=outOrFp,b=outOrSp,out=rPrime);
+//   /*rPrimePrime*/
+//   Xor(a =rPrime , b =false , out = inversedRPrimePrime);
+//   Not(in=inversedRPrimePrime,out=rPrimePrime);
+//    /*tPrimePrime */
+//    Mux(a=true,b=false,sel=rPrime,out=tPrimePrime);
+//    Mux(a=tPrimePrime,b=true,sel=tPrime,out=kpg);
+//
+//  /* check and continue if keep going is enable */ 
+//  Mux()
+//
+//
+//    /*
+//    Not16(in[15]=true,in[13..14]=false,in[0..12]=true,out=maxAddress);
+//    Not16(in=maxAddress,out=flipMaxAddress);
+//    Add16(a=flipMaxAddress,b[0]=true,b[1..15]=false,out=maxAddress2complement);
+//    */
+//
+//
+///*Att
+//     testOutput ---> this should be allowed
+//     maxAddress ---> this should be allowed
+//     testOutput2 ---> this should be Not allowed
+//
+//*/
+//    Add16(a=in,b=maxAddress2complement,out[14]=errorHandlerOutputMb,out[0..7]=errorHandlerOutputFP,out[8..14]=errorHandlerOutputSP);
+//    Or8Way(in=errorHandlerOutputFP,out=isZeroFP);
+//    Or8Way(in=errorHandlerOutputFP,out=isZeroSP);
+//    Or(a=isZeroFP,b=isZeroSP,out=isZeroFinal);
+//    Mux(a=true,b=false,sel=isZeroFinal,out=isZeroOutput);
+//    Mux(a=isZeroOutput,b=true,sel=errorHandlerOutputMb,out=keepGoingOutput);
+//
+//  /*Logic handling I did already the design in a piece of paper*/
+//  /*max_data --> 0x4000*/
+//  Not16(in[15]=true,in[14]=false,in[0..13]=true,out=maxData);
+//  /*maxScreen --> 0x5FFF*/
+//  Not16(in[15]=true,in[13..14]=false,in[0..12]=true,out=maxScreen);
+//  /*toRam --> output 00*/
+//  Not16(in[0..15]=true,out=toRam);
+//  /*toScreen --> 01*/
+//  Not16(in[15]=true,in[0]=false,in[1]=true,in[2..14]=true,out=toScreen);
+//  /*toKeyboard --> 10*/
+//  Not16(in[15]=true,in[0]=true,in[1]=false,in[2..14]=true,out=toKeyboard);
+//   /*boolean  logic for select in mux ---*/
+//  Not16(in=maxScreen,out=flippedMaxScreen);
+//  Add16(a=flippedMaxScreen,b[0]=true,b[1..15]=false,out=maxScreen2Complement);
+//  Add16(a=in,b=maxScreen2Complement,out[14]=isScreenMb);
+//
+//  Not16(in=maxData,out=flippedMaxData);
+//  Add16(a=flippedMaxData,b[0]=true,b[1..15]=false,out=maxData2Complement);
+//  Add16(a=in,b=maxData2Complement,out[14]=isDataMb);
+//  /*Or8Way(in=isScreenFP,out=isScreenFPO);*/
+//  /*Or8Way(in=isScreenSP,out=isScreenSPO);*/
+//  /*Or(a=isScreenFPO,b=isScreenSPO,out=isScreenFinal);*/
+//  /*Muxes to get the correct chip*/
+//  Mux16(a = toKeyboard , b =toScreen , sel = isScreenMb, out =screenOrKeyboard );
+//  Mux16(a = screenOrKeyboard , b =toRam , sel = isDataMb, out[0..1] =RamOrscreenOrKeyboard );
+//
+//  /*Dmux for getting the correct chip*/
+//  DMux4Way(in =load , sel = RamOrscreenOrKeyboard , a =infoToRam , b =infoToScreen , c =infoToKeyboard , d =notNeeded );
+//RAM16K(in =in , load =infoToRam , address =address[0..13] , out =ramValueOutput );
+//Screen(in =in , load =infoToScreen , address =address[0..12] , out =screenValueOutput );
+//Keyboard(out =keyboardValueOutput );
+// Mux4Way16(a =ramValueOutput , b =screenValueOutput , c =keyboardValueOutput , d =false , sel =RamOrscreenOrKeyboard , out = out );
+//
+//        //// Replace this comment with your code.
+//}
+//
 // This file is part of www.nand2tetris.org
 // and the book "The Elements of Computing Systems"
 // by Nisan and Schocken, MIT Press.
@@ -26,101 +152,42 @@ CHIP Memory {
 
     PARTS:
     /*Testing value*/
-
+    /*-1 this should not be allowed*/
+    Not16(in=false,out=testNegative,out[15]=testNegativeMSB);
     /*16383   ---> this should be allowed*/
-    Not16(in[14..15]=true,in[0..13]=false,out=testOutput);
+    Not16(in[14..15]=true,in[0..13]=false,out=testOutput,out[15]=testOutputMSB);
     /*25000 ---> this should be NOT allowed*/
-    Not16(in[15]=true,in[13..14]=false,in[9..12]=true,in[7..8]=false,in[6]=true,in[4]=true,in[0..2]=true,out=testOutput2);
+    Not16(in[15]=true,in[13..14]=false,in[9..12]=true,in[7..8]=false,in[6]=true,in[4]=true,in[0..2]=true,out=testOutput2,out[15]=testOutput2MSB);
     /* 20000 */
-    Not16(in[15]=true,in[14]=false,in[12..13]=true,in[9..11]=false,in[6..8]=true,in[5]=true,in[0..4]=true,out=testOutput3);
+    Not16(in[15]=true,in[14]=false,in[12..13]=true,in[9..11]=false,in[6..8]=true,in[5]=true,in[0..4]=true,out=testOutput3,out[15]=testOutput3MSB);
 
-    /*---- Finish Testing value -----*/
-
-    /*--- Define Constants ----*/
-
-    Not16(in[15]=true,in[13..14]=false,in[0..12]=true,out=maxAddress);
-    Not16(in[15]=true,in[14]=false,in[0..13]=true,out=maxData);
-
-    /*--- End define constants ---*/
-
-    /*------ Keep going -----*/
-    /* tPrime */
-    -- Mux(a = true , b =false , sel =testOutput1[15] , out =isNegative );
-    Mux(a = true , b =false , sel =in[15] , out =Continue );
-    Not16(in=maxAddress,out=flippedMaxAddress);
-    Add16(a=flippedMaxAddress,b[0]=true,b[1..15]=false,out=twoComplementMaxAddress);
-    Add16(a=in,b=twoComplementMaxAddress,out=diff1Result);
-    Mux(a=false,b=diff1Result[15],sel=Continue,out=tPrime);
-
-    /*rPrime */
-
-   Or8Way(in = diff1Result[0..7], out = outOrFp );
-   Or8Way(in[8..14] = diff1Result[8..14],in[15]=false out =outOrSp );
-   Or(a=outOrFp,b=outOrSp,out=rPrime);
-   /*rPrimePrime*/
-   Xor(a =rPrime , b =false , out = inversedRPrimePrime);
-   Not(in=inversedRPrimePrime,out=rPrimePrime);
-    /*tPrimePrime */
-    Mux(a=true,b=false,sel=rPrime,out=tPrimePrime);
-    Mux(a=tPrimePrime,b=true,sel=tPrime,out=kpg);
-
-  /* check and continue if keep going is enable */ 
-  Mux()
-
-
-    /*
-    Not16(in[15]=true,in[13..14]=false,in[0..12]=true,out=maxAddress);
-    Not16(in=maxAddress,out=flipMaxAddress);
-    Add16(a=flipMaxAddress,b[0]=true,b[1..15]=false,out=maxAddress2complement);
+    /*Define*/
+    /*maxCapacity   == 24576
+      Because I will do a boolean condition in < maxCapacity
     */
-
-
-/*Att
-     testOutput ---> this should be allowed
-     maxAddress ---> this should be allowed
-     testOutput2 ---> this should be Not allowed
-
-*/
-    Add16(a=in,b=maxAddress2complement,out[14]=errorHandlerOutputMb,out[0..7]=errorHandlerOutputFP,out[8..14]=errorHandlerOutputSP);
-    Or8Way(in=errorHandlerOutputFP,out=isZeroFP);
-    Or8Way(in=errorHandlerOutputFP,out=isZeroSP);
-    Or(a=isZeroFP,b=isZeroSP,out=isZeroFinal);
-    Mux(a=true,b=false,sel=isZeroFinal,out=isZeroOutput);
-    Mux(a=isZeroOutput,b=true,sel=errorHandlerOutputMb,out=keepGoingOutput);
-
-  /*Logic handling I did already the design in a piece of paper*/
-  /*max_data --> 0x4000*/
-  Not16(in[15]=true,in[14]=false,in[0..13]=true,out=maxData);
-  /*maxScreen --> 0x5FFF*/
-  Not16(in[15]=true,in[13..14]=false,in[0..12]=true,out=maxScreen);
-  /*toRam --> output 00*/
-  Not16(in[0..15]=true,out=toRam);
-  /*toScreen --> 01*/
-  Not16(in[15]=true,in[0]=false,in[1]=true,in[2..14]=true,out=toScreen);
-  /*toKeyboard --> 10*/
-  Not16(in[15]=true,in[0]=true,in[1]=false,in[2..14]=true,out=toKeyboard);
-   /*boolean  logic for select in mux ---*/
-  Not16(in=maxScreen,out=flippedMaxScreen);
-  Add16(a=flippedMaxScreen,b[0]=true,b[1..15]=false,out=maxScreen2Complement);
-  Add16(a=in,b=maxScreen2Complement,out[14]=isScreenMb);
-
-  Not16(in=maxData,out=flippedMaxData);
-  Add16(a=flippedMaxData,b[0]=true,b[1..15]=false,out=maxData2Complement);
-  Add16(a=in,b=maxData2Complement,out[14]=isDataMb);
-  /*Or8Way(in=isScreenFP,out=isScreenFPO);*/
-  /*Or8Way(in=isScreenSP,out=isScreenSPO);*/
-  /*Or(a=isScreenFPO,b=isScreenSPO,out=isScreenFinal);*/
-  /*Muxes to get the correct chip*/
-  Mux16(a = toKeyboard , b =toScreen , sel = isScreenMb, out =screenOrKeyboard );
-  Mux16(a = screenOrKeyboard , b =toRam , sel = isDataMb, out[0..1] =RamOrscreenOrKeyboard );
-
-  /*Dmux for getting the correct chip*/
-  DMux4Way(in =load , sel = RamOrscreenOrKeyboard , a =infoToRam , b =infoToScreen , c =infoToKeyboard , d =notNeeded );
-RAM16K(in =in , load =infoToRam , address =address[0..13] , out =ramValueOutput );
-Screen(in =in , load =infoToScreen , address =address[0..12] , out =screenValueOutput );
-Keyboard(out =keyboardValueOutput );
- Mux4Way16(a =ramValueOutput , b =screenValueOutput , c =keyboardValueOutput , d =false , sel =RamOrscreenOrKeyboard , out = out );
-
-        //// Replace this comment with your code.
+     Not16(in[15] = true , in[13..14]=false,in[0..12]=true, out =maxCapacity );
+    /*maxScreen   == 24575
+      Because I will do a boolean condition in < maxCapacity
+    */
+      Not16(in[15]=true,in[14]=false,in[13]=true,in[0..12]=false,out=maxScreen);
+     /*tPrime*/
+     /*Mux(a = true , b = false , sel = in[15] , out = muxNegativeContinue);*/
+     Mux(a = true , b = false , sel = testNegativeMSB , out = muxNegativeContinue);
+     /*maxCapacity twoComplement*/
+     Not16(in=maxCapacity,out=oneComplementMaxCapacity);
+     Add16(a=oneComplementMaxCapacity,b[0]=true,b[1..15]=false,out=twoComplementMaxCapacity);
+     /*Add16(a=in,b=twoComplementMaxCapacity,out=diffInMaxCapcity,out[15]=diffInMaxCapcityMSB);*/
+     Add16(a=testNegative,b=twoComplementMaxCapacity,out=diffInMaxCapcity,out[15]=diffInMaxCapcityMSB);
+     /*Mux(a=false,b=diffInMaxCapacityMSB,sel=muxNegativeContinue,out=kpgFp);*/
+     /*rPrime*/
+     Or8Way(in[0]=diffInMaxCapcity[0],in[1]=diffInMaxCapcity[1],in[2]=diffInMaxCapcity[2],in[3]=diffInMaxCapcity[3],in[4]=diffInMaxCapcity[4],in[5]=diffInMaxCapcity[5],in[6]=diffInMaxCapcity[6],in[7]=diffInMaxCapcity[7],out=finalOrFp);
+     Or8Way(in[0]=diffInMaxCapcity[8],in[1]=diffInMaxCapcity[9],in[2]=diffInMaxCapcity[10],in[3]=diffInMaxCapcity[11],in[4]=diffInMaxCapcity[12],in[5]=diffInMaxCapcity[13],in[6]=diffInMaxCapcity[14],in[7]=false,out=finalOrSp);
+     Or(a=finalOrSp,b=finalOrFp,out=rPrime);
+     /*tPrimePrime*/
+     Mux(a=true,b=false,sel=rPrime,out=tPrimePrime);
+     /*keep going*/
+     Mux(a=tPrimePrime,b=muxNegativeContinue,sel=diffInMaxCapcityMSB);
 }
+
+
 
