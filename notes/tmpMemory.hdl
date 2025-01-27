@@ -1,93 +1,82 @@
-// This file is part of www.nand2tetris.org
-// and the book "The Elements of Computing Systems"
-// by Nisan and Schocken, MIT Press.
-// File name: projects/5/Memory.hdl
-/**
- * The complete address space of the Hack computer's memory,
- * including RAM and memory-mapped I/O.
- * The chip facilitates read and write operations, as follows:
- *     Read:  out(t) = Memory[address(t)](t)
- *     Write: if load(t-1) then Memory[address(t-1)](t) = in(t-1)
- * In words: the chip always outputs the value stored at the memory
- * location specified by address. If load=1, the in value is loaded
- * into the memory location specified by address. This value becomes
- * available through the out output from the next time step onward.
- * Address space rules:
- * Only the upper 16K+8K+1 words of the Memory chip are used.
- * Access to address>0x6000 is invalid and reads 0. Access to any address
- * in the range 0x4000-0x5FFF results in accessing the screen memory
- * map. Access to address 0x6000 results in accessing the keyboard
- * memory map. The behavior in these addresses is described in the Screen
- * and Keyboard chip specifications given in the lectures and the book.
- */
 CHIP Memory {
     IN in[16], load, address[15];
     OUT out[16];
-
     PARTS:
-    /*
-    Not16(in[15]=true,in[13..14]=false,in[0..12]=true,out[0..14]=maxAddress);
-    Not16(in[0..14]=maxAddress,out[0..14]=flipMaxAddress);
-    Add16(a[0..14]=flipMaxAddress,b[0..14]=true,out[0..14]=maxAddress2complement);
-    */
     /*Testing value*/
+    /*-1 this should not be allowed*/
+    Not16(in=false,out=testNegative,out[15]=testNegativeMSB);
     /*16383   ---> this should be allowed*/
-    Not16(in[14..15]=true,in[0..13]=false,out=testOutput);
+    Not16(in[14..15]=true,in[0..13]=false,out=testOutput,out[15]=testOutputMSB);
     /*25000 ---> this should be NOT allowed*/
-    Not16(in[15]=true,in[13..14]=false,in[9..12]=true,in[7..8]=false,in[6]=true,in[4]=true,in[0..2]=true,out=testOutput2);
+    Not16(in[15]=true,in[13..14]=false,in[9..12]=true,in[7..8]=false,in[6]=true,in[4]=true,in[0..2]=true,out=testOutput2,out[15]=testOutput2MSB);
     /* 20000 */
-    Not16(in[15]=true,in[14]=false,in[12..13]=true,in[9..11]=false,in[6..8]=true,in[5]=true,in[0..4]=true,out=testOutput3);
-    Not16(in[15]=true,in[13..14]=false,in[0..12]=true,out=maxAddress);
-    Not16(in=maxAddress,out=flipMaxAddress);
-    Add16(a=flipMaxAddress,b[0]=true,b[1..15]=false,out=maxAddress2complement);
+    Not16(in[15]=true,in[14]=false,in[12..13]=true,in[9..11]=false,in[6..8]=true,in[5]=true,in[0..4]=true,out=testOutput3,out[15]=testOutput3MSB);
+    /*Define*/
+    /*maxCapacity   == 24576
+      Because I will do a boolean condition in < maxCapacity
+    */
+     Not16(in[15] = true , in[13..14]=false,in[0..12]=true, out =maxCapacity,out[15]=maxCapacityMSB );
+     /*maxCapacity + 1  == 24577
+      Because I will do a boolean condition in < maxCapacity
+    */
+     Not16(in[15] = true , in[13..14]=false,in[1..12]=true,in[0]=false, out =maxCapacityPlusOne,out[15]=maxCapacityPlusOneMSB );
+    /*maxScreen   == 24575
+      Because I will do a boolean condition in < maxCapacity
+    */
+      Not16(in[15]=true,in[14]=false,in[13]=true,in[0..12]=false,out=maxScreen);
+      /*Ram plus one --> 16384 */
+      Not16(in[15]=true,in[14]=false,in[0..12]=true,out=ramPlusOne);
+
+      /*addressScreen*/
+      Not16(in=ramPlusOne,out=oneComplementRamPlusOne);
+      Add16(a=oneComplementRamPlusOne,b[0]=true,out=twoComplementRamPlusOne);
+      Add16(a=twoComplementRamPlusOne,b=in,out[0..12]=screenAddress);
 
 
-/*Att
-     testOutput ---> this should be allowed
-     maxAddress ---> this should be allowed
-     testOutput2 ---> this should be Not allowed
 
-*/
-    Add16(a=in,b=maxAddress2complement,out[14]=errorHandlerOutputMb,out[0..7]=errorHandlerOutputFP,out[8..14]=errorHandlerOutputSP);
-    Or8Way(in=errorHandlerOutputFP,out=isZeroFP);
-    Or8Way(in=errorHandlerOutputFP,out=isZeroSP);
-    Or(a=isZeroFP,b=isZeroSP,out=isZeroFinal);
-    Mux(a=true,b=false,sel=isZeroFinal,out=isZeroOutput);
-    Mux(a=isZeroOutput,b=true,sel=errorHandlerOutputMb,out=keepGoingOutput);
 
-  /*Logic handling I did already the design in a piece of paper*/
-  /*max_data --> 0x4000*/
-  Not16(in[15]=true,in[14]=false,in[0..13]=true,out=maxData);
-  /*maxScreen --> 0x5FFF*/
-  Not16(in[15]=true,in[13..14]=false,in[0..12]=true,out=maxScreen);
-  /*toRam --> output 00*/
-  Not16(in[0..15]=true,out=toRam);
-  /*toScreen --> 01*/
-  Not16(in[15]=true,in[0]=false,in[1]=true,in[2..14]=true,out=toScreen);
-  /*toKeyboard --> 10*/
-  Not16(in[15]=true,in[0]=true,in[1]=false,in[2..14]=true,out=toKeyboard);
-   /*boolean  logic for select in mux ---*/
-  Not16(in=maxScreen,out=flippedMaxScreen);
-  Add16(a=flippedMaxScreen,b[0]=true,b[1..15]=false,out=maxScreen2Complement);
-  Add16(a=in,b=maxScreen2Complement,out[14]=isScreenMb);
+    /*Number validation test*/
+    /*change a*/
+    Xor(a=in[15],b=false,out=numberIGTZero);
+    Not(in=numberIGTZero,out=numberGTZero);
 
-  Not16(in=maxData,out=flippedMaxData);
-  Add16(a=flippedMaxData,b[0]=true,b[1..15]=false,out=maxData2Complement);
-  Add16(a=in,b=maxData2Complement,out[14]=isDataMb);
-  /*Or8Way(in=isScreenFP,out=isScreenFPO);*/
-  /*Or8Way(in=isScreenSP,out=isScreenSPO);*/
-  /*Or(a=isScreenFPO,b=isScreenSPO,out=isScreenFinal);*/
-  /*Muxes to get the correct chip*/
-  Mux16(a = toKeyboard , b =toScreen , sel = isScreenMb, out =screenOrKeyboard );
-  Mux16(a = screenOrKeyboard , b =toRam , sel = isDataMb, out[0..1] =RamOrscreenOrKeyboard );
+    Not16(in=maxCapacityPlusOne,out=maxCapacityOneComplement);
+    Add16(a=maxCapacityOneComplement,b[0]=true,out=maxCapacityTwoComplement);
+    /*change b*/
+    Add16(a=maxCapacityTwoComplement,b=in,out=diffInMaxCapacity,out[15]=diffInMaxCapacityMSB);
+    Xor(a=diffInMaxCapacityMSB,b=true,out=resultValidINAddition);
+    Not(in=resultValidINAddition,out=resultValidNAddition);
+    And(a=numberGTZero,b=resultValidNAddition,out=validNumber);
+    /*valid number need to be concatenated with distribution*/
+    /*Distribution*/
 
-  /*Dmux for getting the correct chip*/
-  DMux4Way(in =load , sel = RamOrscreenOrKeyboard , a =infoToRam , b =infoToScreen , c =infoToKeyboard , d =notNeeded );
-RAM16K(in =in , load =infoToRam , address =address[0..13] , out =ramValueOutput );
-Screen(in =in , load =infoToScreen , address =address[0..12] , out =screenValueOutput );
-Keyboard(out =keyboardValueOutput );
- Mux4Way16(a =ramValueOutput , b =screenValueOutput , c =keyboardValueOutput , d =false , sel =RamOrscreenOrKeyboard , out = out );
+    Not16(in=maxCapacity,out=maxCapacityOneComplementt);
+    Add16(a=maxCapacityOneComplementt,b[0]=true,out=maxCapacityTwoComplementt);
+    /*change b*/
+    Add16(a=maxCapacityTwoComplementt,b=in,out=diffInMaxCapacityt,out[0..7]=outDiff2FP,out[8..15]=outDiff2SP);
 
-        //// Replace this comment with your code.
+   Or8Way(in=outDiff2FP,out =diff2FinalOrFp );
+   Or8Way(in=outDiff2SP,out =diff2FinalOrSp );
+   Or(a=diff2FinalOrFp,b=diff2FinalOrSp,out=diff2FinalOr);
+   Xor(a=diff2FinalOr,b=false,out=IkeyboardEnabled);
+   Not(in=IkeyboardEnabled,out=KeyboardEnabled);
+   Keyboard(out =keyboardOutput);
+   /*dmux condition logic*/
+    Not16(in=ramPlusOne,out=ramPlusOneComplement);
+    Add16(a=ramPlusOneComplement,b[0]=true,out=ramPlusOneTwoComplement);
+    /*change b*/
+    Add16(a=ramPlusOneTwoComplement,b=in,out=diffInRamPlusOne,out[15]=diffInRamPlusOneMSB);
+    Xor(a=diffInRamPlusOneMSB,b=true,out=InvertedRam);
+    Not(in=InvertedRam,out=selectedRam);
+    /*
+    I need to substract of the real address.
+    */
+    DMux(in = load, sel =selectedRam , a = loadScreen, b =loadRam );
+    Screen(in = in, load =loadScreen , address =screenAddress , out =outputScreen );
+    RAM16K(in = in , load =loadRam , address =address[0..13] , out = outputRam);
+    Mux16(a=outputScreen,b=outputRam,sel=selectedRam,out=outputRamOrScreen);
+    Mux16(a=outputRamOrScreen,b=keyboardOutput,sel=KeyboardEnabled,out=chipOutput);
+    Mux16(a=false,b=chipOutput,sel=validNumber,out=out);
+
 }
 
