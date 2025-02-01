@@ -48,5 +48,19 @@ CHIP Memory {
     Xor(a=diffInMaxCapacityMSB,b=true,out=resultValidINAddition);
     Not(in=resultValidINAddition,out=resultValidNAddition);
     And(a=numberGTZero,b=resultValidNAddition,out=validNumber);
+    /*valid number need to be concatenated with distribution*/
+    /*Distribution*/
+
+    Not16(in=maxCapacity,out=maxCapacityOneComplementt);
+    Add16(a=maxCapacityOneComplementt,b[0]=true,out=maxCapacityTwoComplementt);
+    /*change b*/
+    Add16(a=maxCapacityTwoComplementt,b=testOutput3,out=diffInMaxCapacityt,out=outDiff2,out[15]=diffInMaxCapacitytMSB);
+
+   Or8Way(in[0]=outDiff2[0],in[1]=outDiff2[1],in[2]=outDiff2[2],in[3]=outDiff2[3],in[4]=outDiff2[4],in[5]=outDiff2[5],in[6]=outDiff2[6],in[7]=outDiff2[7] out =finalOrFp );
+   Or8Way(in[0]=outDiff2[8],in[1]=outDiff2[9],in[2]=outDiff2[10],in[3]=outDiff2[11],in[4]=outDiff2[12],in[5]=outDiff2[13],in[6]=outDiff2[14],in[7]=outDiff2[15] out =finalOrSp );
+   Or(a=finalOrFp,b=finalOrSp,out=zeroKeyOneNoKey);
+
+
+
 }
 

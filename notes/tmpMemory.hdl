@@ -30,30 +30,30 @@ CHIP Memory {
       /*addressScreen*/
       Not16(in=ramPlusOne,out=oneComplementRamPlusOne);
       Add16(a=oneComplementRamPlusOne,b[0]=true,out=twoComplementRamPlusOne);
-      Add16(a=twoComplementRamPlusOne,b=in,out[0..12]=screenAddress);
+      Add16(a=twoComplementRamPlusOne,b[15]=false,b[0..14]=address,out[0..12]=screenAddress);
 
 
 
 
-    /*Number validation test*/
+    /*Address validation test*/
     /*change a*/
-    Xor(a=in[15],b=false,out=numberIGTZero);
+    Xor(a=address[14],b=false,out=numberIGTZero);
     Not(in=numberIGTZero,out=numberGTZero);
 
     Not16(in=maxCapacityPlusOne,out=maxCapacityOneComplement);
     Add16(a=maxCapacityOneComplement,b[0]=true,out=maxCapacityTwoComplement);
     /*change b*/
-    Add16(a=maxCapacityTwoComplement,b=in,out=diffInMaxCapacity,out[15]=diffInMaxCapacityMSB);
+    Add16(a=maxCapacityTwoComplement,b[15]=false,b[0..14]=address,out=diffInMaxCapacity,out[15]=diffInMaxCapacityMSB);
     Xor(a=diffInMaxCapacityMSB,b=true,out=resultValidINAddition);
     Not(in=resultValidINAddition,out=resultValidNAddition);
-    And(a=numberGTZero,b=resultValidNAddition,out=validNumber);
+    And(a=true,b=resultValidNAddition,out=validNumber);
     /*valid number need to be concatenated with distribution*/
     /*Distribution*/
 
     Not16(in=maxCapacity,out=maxCapacityOneComplementt);
     Add16(a=maxCapacityOneComplementt,b[0]=true,out=maxCapacityTwoComplementt);
     /*change b*/
-    Add16(a=maxCapacityTwoComplementt,b=in,out=diffInMaxCapacityt,out[0..7]=outDiff2FP,out[8..15]=outDiff2SP);
+    Add16(a=maxCapacityTwoComplementt,b[15]=false,b[0..14]=true,out=diffInMaxCapacityt,out[0..7]=outDiff2FP,out[8..15]=outDiff2SP);
 
    Or8Way(in=outDiff2FP,out =diff2FinalOrFp );
    Or8Way(in=outDiff2SP,out =diff2FinalOrSp );
@@ -65,7 +65,7 @@ CHIP Memory {
     Not16(in=ramPlusOne,out=ramPlusOneComplement);
     Add16(a=ramPlusOneComplement,b[0]=true,out=ramPlusOneTwoComplement);
     /*change b*/
-    Add16(a=ramPlusOneTwoComplement,b=in,out=diffInRamPlusOne,out[15]=diffInRamPlusOneMSB);
+    Add16(a=ramPlusOneTwoComplement,b[15]=false,b[0..14]=address,out=diffInRamPlusOne,out[15]=diffInRamPlusOneMSB);
     Xor(a=diffInRamPlusOneMSB,b=true,out=InvertedRam);
     Not(in=InvertedRam,out=selectedRam);
     /*
@@ -75,8 +75,8 @@ CHIP Memory {
     Screen(in = in, load =loadScreen , address =screenAddress , out =outputScreen );
     RAM16K(in = in , load =loadRam , address =address[0..13] , out = outputRam);
     Mux16(a=outputScreen,b=outputRam,sel=selectedRam,out=outputRamOrScreen);
-    Mux16(a=outputRamOrScreen,b=keyboardOutput,sel=KeyboardEnabled,out=chipOutput);
-    Mux16(a=false,b=chipOutput,sel=validNumber,out=out);
+    Mux16(a=outputRamOrScreen,b=keyboardOutput,sel=KeyboardEnabled,out=out);
+    //Mux16(a=false,b=chipOutput,sel=validNumber,out=out);
 
 }
 
