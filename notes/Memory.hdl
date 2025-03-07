@@ -53,7 +53,7 @@ CHIP Memory {
     Not16(in=maxCapacity,out=maxCapacityOneComplementt);
     Add16(a=maxCapacityOneComplementt,b[0]=true,out=maxCapacityTwoComplementt);
     /*change b*/
-    Add16(a=maxCapacityTwoComplementt,b[15]=false,b[0..14]=true,out=diffInMaxCapacityt,out[0..7]=outDiff2FP,out[8..15]=outDiff2SP);
+    Add16(a=maxCapacityTwoComplementt,b[15]=false,b[0..14]=address,out=diffInMaxCapacityt,out[0..7]=outDiff2FP,out[8..15]=outDiff2SP);
 
    Or8Way(in=outDiff2FP,out =diff2FinalOrFp );
    Or8Way(in=outDiff2SP,out =diff2FinalOrSp );
@@ -79,4 +79,3 @@ CHIP Memory {
     //Mux16(a=false,b=chipOutput,sel=validNumber,out=out);
 
 }
-
