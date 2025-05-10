@@ -54,21 +54,22 @@ void Control::traverseFile() {
       }
     }
   }
+}
 
-  void Control::setReadFile(string filepath) {
-    if (std::filesystem::exists(filepath)) {
-      this->readFile = ifstream(filepath);
-    } else {
-      cout << "ERROR AT READING FILE" << endl;
-      exit(1);
-    }
+void Control::setReadFile(string filepath) {
+  if (std::filesystem::exists(filepath)) {
+    this->readFile = ifstream(filepath);
+  } else {
+    cout << "ERROR AT READING FILE" << endl;
+    exit(1);
   }
-  void Control::setWriteFile(string filepath) {
-    this->writeFile = ofstream(filepath);
-  }
-  ifstream &Control::getReadFile() { return this->readFile; }
-  ofstream &Control::getWriteFile() { return this->writeFile; }
-  Control::~Control() {
-    this->readFile.close();
-    this->writeFile.close();
-  }
+}
+void Control::setWriteFile(string filepath) {
+  this->writeFile = ofstream(filepath);
+}
+ifstream &Control::getReadFile() { return this->readFile; }
+ofstream &Control::getWriteFile() { return this->writeFile; }
+Control::~Control() {
+  this->readFile.close();
+  this->writeFile.close();
+}
