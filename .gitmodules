@@ -1,0 +1,6 @@
+[submodule "nand2tetris_assembler"]
+	path = nand2tetris_assembler
+	url = git@github.com:juanpabloinformatica/nand2tetris_assembler.git
+[submodule "nand2tetris_vm"]
+	path = nand2tetris_vm
+	url = git@github.com:juanpabloinformatica/nand2tetris_vm.git
