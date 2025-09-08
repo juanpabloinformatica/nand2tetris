@@ -17,7 +17,7 @@ M=D
 @0
 D=A
 @3
-A=A+D
+A=D+A
 D=A
 
 @14
@@ -47,7 +47,7 @@ M=D
 @1
 D=A
 @3
-A=A+D
+A=D+A
 D=A
 
 @14
@@ -77,7 +77,7 @@ M=D
 @2
 D=A
 @3
-D=M+D
+D=D+M
 @14
 M=D
 @13
@@ -105,7 +105,7 @@ M=D
 @6
 D=A
 @4
-D=M+D
+D=D+M
 @14
 M=D
 @13
@@ -118,7 +118,7 @@ M=D
 @0
 D=A
 @3
-D=M+D
+D=D+M
 @0
 A=M
 M=D
@@ -126,10 +126,10 @@ M=D
 M=M+1
 
 //push pointer 1
-@1
+@0
 D=A
-@3
-D=M+D
+@4
+D=D+M
 @0
 A=M
 M=D
@@ -138,24 +138,23 @@ M=M+1
 
 // Setting to 0 last 2 values and then pointing to the n-1 value for putting the result in there
 //add
-@0
-M=M-1
-@0
-M=M-1
-// Finally pushing the result of the arithmetic operation
 
-@6070
-D=A
 @0
+M=M-1
 A=M
-M=D
+D=M
+@0
+M=M-1
+A=M
+M=M+D
 @0
 M=M+1
+
 //push this 2
 @2
 D=A
 @3
-A=M+D
+A=D+M
 D=M
 @0
 A=M
@@ -165,24 +164,23 @@ M=M+1
 
 // Setting to 0 last 2 values and then pointing to the n-1 value for putting the result in there
 //sub
-@0
-M=M-1
-@0
-M=M-1
-// Finally pushing the result of the arithmetic operation
 
-@6038
-D=A
 @0
+M=M-1
 A=M
-M=D
+D=M
+@0
+M=M-1
+A=M
+M=M-D
 @0
 M=M+1
+
 //push that 6
 @6
 D=A
 @4
-A=M+D
+A=D+M
 D=M
 @0
 A=M
@@ -192,16 +190,15 @@ M=M+1
 
 // Setting to 0 last 2 values and then pointing to the n-1 value for putting the result in there
 //add
-@0
-M=M-1
-@0
-M=M-1
-// Finally pushing the result of the arithmetic operation
 
-@6084
-D=A
 @0
+M=M-1
 A=M
-M=D
+D=M
+@0
+M=M-1
+A=M
+M=M+D
 @0
 M=M+1
+

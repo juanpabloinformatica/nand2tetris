@@ -35,7 +35,7 @@ M=D
 @8
 D=A
 @16
-A=A+D
+A=D+A
 D=A
 
 @14
@@ -56,7 +56,7 @@ M=D
 @3
 D=A
 @16
-A=A+D
+A=D+A
 D=A
 
 @14
@@ -77,7 +77,7 @@ M=D
 @1
 D=A
 @16
-A=A+D
+A=D+A
 D=A
 
 @14
@@ -89,10 +89,10 @@ A=M
 M=D
 
 //push static 3
-@3
+@0
 D=A
-@16
-D=M+D
+@19
+D=D+M
 @0
 A=M
 M=D
@@ -100,10 +100,10 @@ M=D
 M=M+1
 
 //push static 1
-@1
+@0
 D=A
-@16
-D=M+D
+@17
+D=D+M
 @0
 A=M
 M=D
@@ -112,24 +112,23 @@ M=M+1
 
 // Setting to 0 last 2 values and then pointing to the n-1 value for putting the result in there
 //sub
-@0
-M=M-1
-@0
-M=M-1
-// Finally pushing the result of the arithmetic operation
 
-@222
-D=A
 @0
+M=M-1
 A=M
-M=D
+D=M
+@0
+M=M-1
+A=M
+M=M-D
 @0
 M=M+1
+
 //push static 8
-@8
+@0
 D=A
-@16
-D=M+D
+@24
+D=D+M
 @0
 A=M
 M=D
@@ -138,16 +137,15 @@ M=M+1
 
 // Setting to 0 last 2 values and then pointing to the n-1 value for putting the result in there
 //add
-@0
-M=M-1
-@0
-M=M-1
-// Finally pushing the result of the arithmetic operation
 
-@1110
-D=A
 @0
+M=M-1
 A=M
-M=D
+D=M
+@0
+M=M-1
+A=M
+M=M+D
 @0
 M=M+1
+
