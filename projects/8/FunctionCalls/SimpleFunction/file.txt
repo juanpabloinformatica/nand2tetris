@@ -1,0 +1,232 @@
+
+//function SimpleFunction.test 2
+
+// Declare a label for the function entry
+// that functionName is codeWritterObj->parser->getArg1()
+(SimpleFunction.test)
+// k  number of local variables
+// Initialize all of them to 0
+// that k is codeWritterObj->parser->getArg2()
+//0 @2
+//1 D=A
+//2 @13
+//3 M=D
+(FPUSHSimpleFunction.test)
+//4 @0
+//5 A=M
+//6 M=0
+//7 @0
+//8 M=M+1
+//9 @13
+//10 M=M-1
+//11 D=M
+//12 @FPUSHSimpleFunction.test
+//13 D;JGT
+//instructions:	14
+//push local 0
+
+//14 @0
+//15 D=A
+//16 @1
+//17 A=D+M
+//18 D=M
+//19 @0
+//20 A=M
+//21 M=D
+//22 @0
+//23 M=M+1
+
+//instructions:	10
+//push local 1
+
+//24 @1
+//25 D=A
+//26 @1
+//27 A=D+M
+//28 D=M
+//29 @0
+//30 A=M
+//31 M=D
+//32 @0
+//33 M=M+1
+
+//instructions:	10// Setting to 0 last 2 values and then pointing to the n-1 value for putting the result in there
+
+//add
+
+//34 @0
+//35 M=M-1
+//36 A=M
+//37 D=M
+//38 @0
+//39 M=M-1
+//40 A=M
+//41 M=M+D
+//42 @0
+//43 M=M+1
+
+//instructions:	10// Setting to 0 last 2 values and then pointing to the n-1 value for putting the result in there
+
+//not
+
+//44 @0
+//45 M=M-1
+//46 A=M
+//47 M=!M
+//48 @0
+//49 M=M+1
+
+//instructions:	6
+//push argument 0
+
+//50 @0
+//51 D=A
+//52 @2
+//53 A=D+M
+//54 D=M
+//55 @0
+//56 A=M
+//57 M=D
+//58 @0
+//59 M=M+1
+
+//instructions:	10// Setting to 0 last 2 values and then pointing to the n-1 value for putting the result in there
+
+//add
+
+//60 @0
+//61 M=M-1
+//62 A=M
+//63 D=M
+//64 @0
+//65 M=M-1
+//66 A=M
+//67 M=M+D
+//68 @0
+//69 M=M+1
+
+//instructions:	10
+//push argument 1
+
+//70 @1
+//71 D=A
+//72 @2
+//73 A=D+M
+//74 D=M
+//75 @0
+//76 A=M
+//77 M=D
+//78 @0
+//79 M=M+1
+
+//instructions:	10// Setting to 0 last 2 values and then pointing to the n-1 value for putting the result in there
+
+//sub
+
+//80 @0
+//81 M=M-1
+//82 A=M
+//83 D=M
+//84 @0
+//85 M=M-1
+//86 A=M
+//87 M=M-D
+//88 @0
+//89 M=M+1
+
+//instructions:	10
+//return
+
+// FRAME = LCL
+//90 @1
+//91 D=M
+//92 @13
+//93 M=D
+// RET = *(FRAME - 5)
+//94 @13
+//95 D=M
+//96 @15
+//97 M=D
+//98 M=M-D
+//99 A=M
+//100 D=M
+//101 @14
+//102 M=D
+// *ARG = pop()
+//103 @0
+//104 M=M-1
+//105 A=M
+//106 D=M
+//107 @2
+//108 A=M
+//109 M=D
+// SP = ARG+1
+//110 @1
+//111 D=A
+//112 @2
+//113 D=M+D
+//114 @0
+//115 M=D
+// THAT = *(FRAME-1)
+//116 @13
+//117 D=M
+//118 @15
+//119 M=D
+//120 @1
+//121 D=A
+//122 @15
+//123 M=M-D
+//124 A=M
+//125 D=M
+//126 @4
+//127 M=D
+// THIS = *(FRAME - 2)
+//128 @13
+//129 D=M
+//130 @15
+//131 M=D
+//132 @2
+//133 D=A
+//134 @15
+//135 M=M-D
+//136 A=M
+//137 D=M
+//138 @3
+//139 M=D
+// ARG = *(FRAME - 3)
+//140 @13
+//141 D=M
+//142 @15
+//143 M=D
+//144 @3
+//145 D=A
+//146 @15
+//147 M=M-D
+//148 A=M
+//149 D=M
+//150 @2
+//151 M=D
+// LCL = *(FRAME - 4)
+//152 @13
+//153 D=M
+//154 @15
+//155 M=D
+//156 @4
+//157 D=A
+//158 @15
+//159 M=M-D
+//160 A=M
+//161 D=M
+//162 @1
+//163 M=D
+//goto RET
+//be carefull here to examine
+// the idea is the following I need
+//to go back to the location
+//location is stored in RET
+//164 @14
+//165 A=M
+//166 0;JMP
+
+//instructions:	80// TOTAL LINES:176
+//END OF FILE

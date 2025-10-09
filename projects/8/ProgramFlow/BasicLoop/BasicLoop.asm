@@ -8,6 +8,7 @@ M=D
 M=M+1
 
 //pop local 0         // sum = 0
+
 @0
 M=M-1
 A=M
@@ -28,6 +29,7 @@ M=D
 
 //label LOOP
 (LOOP)
+
 //push argument 0
 @0
 D=A
@@ -67,6 +69,7 @@ M=M+D
 M=M+1
 
 //pop local 0	        // sum = sum + n
+
 @0
 M=M-1
 A=M
@@ -121,6 +124,7 @@ M=M-D
 M=M+1
 
 //pop argument 0      // n--
+
 @0
 M=M-1
 A=M
@@ -158,6 +162,7 @@ A=M
 D=M
 @LOOP
 D;JGT
+
 //push local 0        // else, pushes sum to the stack's top
 @0
 D=A
