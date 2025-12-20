@@ -7,3 +7,6 @@
 [submodule "nand2tetrisJack"]
 	path = nand2tetrisJack
 	url = git@github.com:juanpabloinformatica/nand2tetrisJack.git
+[submodule "nand2tetrisJackCompiler"]
+	path = nand2tetrisJackCompiler
+	url = https://github.com/juanpabloinformatica/nand2tetrisJackCompiler.git
