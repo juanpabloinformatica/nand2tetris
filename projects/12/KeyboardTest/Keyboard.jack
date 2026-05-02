@@ -1,0 +1,225 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/12/Keyboard.jack
+/**
+ * A library for handling user input from the keyboard.
+ */
+class Keyboard {
+
+
+    /** Initializes the keyboard. */
+    function void init() {
+    return;
+    } 
+
+    /**
+     * Returns the character of the currently pressed key on the keyboard;
+     * if no key is currently pressed, returns 0.
+     *
+     * Recognizes all ASCII characters, as well as the following keys:
+     * new line = 128 = String.newline()
+     * backspace = 129 = String.backspace()
+     * left arrow = 130
+     * up arrow = 131
+     * right arrow = 132
+     * down arrow = 133
+     * home = 134
+     * End = 135
+     * page up = 136
+     * page down = 137
+     * insert = 138
+     * delete = 139
+     * ESC = 140
+     * F1 - F12 = 141 - 152
+     */
+    function char keyPressed() {
+      var int keyboardAddress;
+      var int pressedKey;
+      let keyboardAddress = 24576;
+      let pressedKey = Memory.peek(keyboardAddress);
+      return pressedKey;
+    }
+
+    /**	Waits until a key is pressed on the keyboard and released,
+     *  then echoes the key to the screen, and returns the character 
+     *  of the pressed key. */
+    function char readChar() {
+      var char pressedKey;
+      var char value;
+      let pressedKey = 0;
+
+      while(pressedKey = 0){
+        let pressedKey = keyPressed();
+      }
+      let value = pressedKey;
+      while(~(pressedKey = 0)){
+        let pressedKey = keyPressed();
+      }
+      do Output.printChar(value);
+      return value;
+    }
+
+    /**	Displays the message on the screen, reads from the keyboard the entered
+     *  text until a newline character is detected, echoes the text to the screen,
+     *  and returns its value. Also handles user backspaces. */
+    function String readLine(String message) {
+      var int ENTER_MAP;
+      var int BSPACE_MAP;
+      var int MAX_STRING_LENGTH;
+      var String s;
+      var char gottenChar;
+
+      let MAX_STRING_LENGTH = 200;
+      let ENTER_MAP = 128;
+      let BSPACE_MAP = 129;
+      let s = String.new(MAX_STRING_LENGTH);
+      do Output.printString(message);
+      while(1=1){
+        let gottenChar = readChar();
+        if(gottenChar=ENTER_MAP){
+          do Output.println();
+          return s;
+        }
+        if (gottenChar=BSPACE_MAP){
+          do s.eraseLastChar();
+        }else{
+          let s = s.appendChar(gottenChar);
+        }
+      }
+      return s;
+    }   
+
+    /*For getting int result from chacter*/
+
+    function int charToInt(char digit){
+      if(digit = 48){
+        return 0;
+      }
+      if(digit = 49){
+        return 1;
+      }
+      if(digit = 50){
+        return 2;
+      }
+      if(digit = 51){
+        return 3;
+      }
+      if(digit = 52){
+        return 4;
+      }
+      if(digit = 53){
+        return 5;
+      }
+      if(digit = 54){
+        return 6;
+      }
+      if(digit = 55){
+        return 7;
+      }
+      if(digit = 56){
+        return 8;
+      }
+      if(digit = 57){
+        return 9;
+      }
+      return -1;
+    }
+    /*For getting string to int*/
+    function int stringValueToInt(String stringValue,int stringValueLength){
+      var int sum;
+      var int i;
+      var char sign;
+      var int NEG_MAP;
+      var int TEN_FACTOR;
+      var int iterations;
+      var int charToIntResult;
+      var int temp;
+
+      let TEN_FACTOR=10;
+      let NEG_MAP = 45;
+      let sum = 0;
+      let i = stringValueLength-1;
+      let iterations = 0;
+      let charToIntResult = 0;
+
+      do Output.printString("IN STRING_VALUE_TO_INT");
+      do Output.println();
+      do Output.printString("STRING RECEIVED:  ");
+      do Output.printString(stringValue);
+      do Output.println();
+      do Output.printString("STRING_LENGTH:  ");
+      do Output.printInt(stringValueLength);
+      do Output.println();
+      //do Sys.halt();
+
+      while( (i > 0) | (i = 0)){
+        if (i=0){
+          let sign = stringValue.charAt(i);
+          if(sign = NEG_MAP ){
+            let sum = sum * -1;
+          }else{
+              let charToIntResult = charToInt(stringValue.charAt(i));
+              let sum = sum+(charToIntResult * TEN_FACTOR);
+              let iterations = iterations + 1;
+              let TEN_FACTOR = TEN_FACTOR * 10;
+            /*The same but doesn't matter*/
+          }
+          do Output.printInt(sum);
+          do Output.println();
+          return sum;
+        }
+        let charToIntResult = charToInt(stringValue.charAt(i));
+        if(iterations=0){
+          let sum = sum+charToIntResult;
+          let iterations = iterations + 1;
+        }else{
+          let sum = sum+(charToIntResult*TEN_FACTOR);
+          let iterations = iterations + 1;
+          let TEN_FACTOR = TEN_FACTOR * 10;
+        }
+        let i = i - 1;
+      }
+      return sum;
+    }
+
+    /** Displays the message on the screen, reads from the keyboard the entered
+     *  text until a newline character is detected, echoes the text to the screen,
+     *  and returns its integer value (until the first non-digit character in the
+     *  entered text is detected). Also handles user backspaces. */
+    function int readInt(String message) {
+      
+      var int ENTER_MAP;
+      var int BSPACE_MAP;
+      var int MAX_STRING_LENGTH;
+      var String s;
+      var char gottenChar;
+      var int stringValueLength;
+      var int value;
+
+      let MAX_STRING_LENGTH = 200;
+      let ENTER_MAP = 128;
+      let BSPACE_MAP = 129;
+      let s = String.new(MAX_STRING_LENGTH);
+      /*For debuggin*/
+      do Output.printString(message);
+      do Output.println();
+
+      while(1=1){
+        let gottenChar = readChar();
+        if(gottenChar=ENTER_MAP){
+          do Output.println();
+          let value = stringValueToInt(s,stringValueLength);
+          return value;
+        }
+        if (gottenChar=BSPACE_MAP){
+          do s.eraseLastChar();
+        }else{
+          let s = s.appendChar(gottenChar);
+          let stringValueLength = stringValueLength + 1;
+        }
+      }
+      return s;
+
+    }
+}
