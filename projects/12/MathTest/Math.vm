@@ -1,0 +1,684 @@
+function Math.init 0
+push constant 16
+call Array.new 1
+pop static 1
+call Math.setPowerOfTwo 0
+pop temp 0
+push constant 0
+return
+function Math.showArray 1
+push constant 0
+pop local 0
+label Math_showArray_loop_0
+push local 0
+push constant 15
+lt
+push local 0
+push constant 15
+eq
+or
+not
+if-goto Math_showArray_Endloop_0
+push local 0
+push constant 1
+add
+pop local 0
+goto Math_showArray_loop_0
+label Math_showArray_Endloop_0
+push constant 0
+return
+function Math.showArray2 1
+push constant 0
+pop local 0
+label Math_showArray2_loop_0
+push local 0
+push constant 15
+lt
+push local 0
+push constant 15
+eq
+or
+not
+if-goto Math_showArray2_Endloop_0
+push local 0
+push constant 1
+add
+pop local 0
+goto Math_showArray2_loop_0
+label Math_showArray2_Endloop_0
+push constant 0
+return
+function Math.setPowerOfTwo 0
+push static 1
+push constant 0
+add
+pop pointer 1
+push constant 1
+push static 1
+push constant 0
+add
+pop pointer 1
+pop that 0
+push static 1
+push constant 1
+add
+pop pointer 1
+push constant 2
+push static 1
+push constant 1
+add
+pop pointer 1
+pop that 0
+push static 1
+push constant 2
+add
+pop pointer 1
+push constant 4
+push static 1
+push constant 2
+add
+pop pointer 1
+pop that 0
+push static 1
+push constant 3
+add
+pop pointer 1
+push constant 8
+push static 1
+push constant 3
+add
+pop pointer 1
+pop that 0
+push static 1
+push constant 4
+add
+pop pointer 1
+push constant 16
+push static 1
+push constant 4
+add
+pop pointer 1
+pop that 0
+push static 1
+push constant 5
+add
+pop pointer 1
+push constant 32
+push static 1
+push constant 5
+add
+pop pointer 1
+pop that 0
+push static 1
+push constant 6
+add
+pop pointer 1
+push constant 64
+push static 1
+push constant 6
+add
+pop pointer 1
+pop that 0
+push static 1
+push constant 7
+add
+pop pointer 1
+push constant 128
+push static 1
+push constant 7
+add
+pop pointer 1
+pop that 0
+push static 1
+push constant 8
+add
+pop pointer 1
+push constant 256
+push static 1
+push constant 8
+add
+pop pointer 1
+pop that 0
+push static 1
+push constant 9
+add
+pop pointer 1
+push constant 512
+push static 1
+push constant 9
+add
+pop pointer 1
+pop that 0
+push static 1
+push constant 10
+add
+pop pointer 1
+push constant 1024
+push static 1
+push constant 10
+add
+pop pointer 1
+pop that 0
+push static 1
+push constant 11
+add
+pop pointer 1
+push constant 2048
+push static 1
+push constant 11
+add
+pop pointer 1
+pop that 0
+push static 1
+push constant 12
+add
+pop pointer 1
+push constant 4096
+push static 1
+push constant 12
+add
+pop pointer 1
+pop that 0
+push static 1
+push constant 13
+add
+pop pointer 1
+push constant 8192
+push static 1
+push constant 13
+add
+pop pointer 1
+pop that 0
+push static 1
+push constant 14
+add
+pop pointer 1
+push constant 16384
+push static 1
+push constant 14
+add
+pop pointer 1
+pop that 0
+push static 1
+push constant 15
+add
+pop pointer 1
+push constant 32767
+push static 1
+push constant 15
+add
+pop pointer 1
+pop that 0
+push constant 0
+return
+function Math.setNumberBitArray 2
+push argument 2
+pop local 1
+push argument 1
+push constant 1
+sub
+pop local 0
+label Math_setNumberBitArray_loop_0
+push local 0
+push constant 0
+gt
+push local 0
+push constant 0
+eq
+or
+not
+if-goto Math_setNumberBitArray_Endloop_0
+push static 1
+push local 0
+add
+pop pointer 1
+push that 0
+push local 1
+lt
+push static 1
+push local 0
+add
+pop pointer 1
+push that 0
+push local 1
+eq
+or
+not
+if-goto Math_setNumberBitArray_end_if_1
+push local 1
+push static 1
+push local 0
+add
+pop pointer 1
+push that 0
+sub
+pop local 1
+push argument 0
+push local 0
+add
+pop pointer 1
+push constant 1
+push argument 0
+push local 0
+add
+pop pointer 1
+pop that 0
+goto Math_setNumberBitArray_end_if_1
+label Math_setNumberBitArray_end_if_1
+push local 0
+push constant 1
+sub
+pop local 0
+goto Math_setNumberBitArray_loop_0
+label Math_setNumberBitArray_Endloop_0
+push constant 0
+return
+function Math.bit 2
+push argument 0
+pop local 1
+push constant 16
+push constant 1
+sub
+pop local 0
+label Math_bit_loop_0
+push local 0
+push constant 0
+gt
+push local 0
+push constant 0
+eq
+push local 1
+push constant 0
+gt
+and
+or
+not
+if-goto Math_bit_Endloop_0
+push static 1
+push local 0
+add
+pop pointer 1
+push that 0
+push local 1
+lt
+push static 1
+push local 0
+add
+pop pointer 1
+push that 0
+push local 1
+eq
+or
+not
+if-goto Math_bit_end_if_1
+push local 1
+push static 1
+push local 0
+add
+pop pointer 1
+push that 0
+sub
+pop local 1
+push local 0
+push argument 1
+eq
+not
+if-goto Math_bit_end_if_2
+push constant 1
+return
+goto Math_bit_end_if_2
+label Math_bit_end_if_2
+goto Math_bit_end_if_1
+label Math_bit_end_if_1
+push local 0
+push constant 1
+sub
+pop local 0
+goto Math_bit_loop_0
+label Math_bit_Endloop_0
+push constant 0
+return
+function Math.multiply 5
+push constant 0
+pop local 0
+push constant 0
+pop local 2
+push constant 0
+pop local 4
+push argument 0
+push constant 0
+lt
+push argument 1
+push constant 0
+lt
+or
+not
+if-goto Math_multiply_end_if_0
+push constant 1
+pop local 4
+goto Math_multiply_end_if_0
+label Math_multiply_end_if_0
+push argument 0
+push constant 0
+lt
+push argument 1
+push constant 0
+lt
+and
+not
+if-goto Math_multiply_end_if_1
+push constant 0
+pop local 4
+goto Math_multiply_end_if_1
+label Math_multiply_end_if_1
+push argument 0
+call Math.abs 1
+pop argument 0
+push argument 1
+call Math.abs 1
+pop argument 1
+push argument 0
+pop local 1
+label Math_multiply_loop_2
+push local 2
+push constant 16
+lt
+not
+if-goto Math_multiply_Endloop_2
+push argument 1
+push local 2
+call Math.bit 2
+pop local 3
+push local 3
+push constant 1
+eq
+not
+if-goto Math_multiply_end_if_3
+push local 0
+push local 1
+add
+pop local 0
+goto Math_multiply_end_if_3
+label Math_multiply_end_if_3
+push local 1
+push local 1
+add
+pop local 1
+push local 2
+push constant 1
+add
+pop local 2
+goto Math_multiply_loop_2
+label Math_multiply_Endloop_2
+push local 4
+push constant 1
+eq
+not
+if-goto Math_multiply_end_if_4
+push local 0
+push local 0
+push local 0
+add
+sub
+pop local 0
+goto Math_multiply_end_if_4
+label Math_multiply_end_if_4
+push pointer 0
+pop temp 2
+push constant 7
+call String.new 1
+pop pointer 0
+push pointer 0
+push constant 83
+call String.appendChar 2
+pop pointer 0
+push pointer 0
+push constant 85
+call String.appendChar 2
+pop pointer 0
+push pointer 0
+push constant 77
+call String.appendChar 2
+pop pointer 0
+push pointer 0
+push constant 58
+call String.appendChar 2
+pop pointer 0
+push pointer 0
+push constant 32
+call String.appendChar 2
+pop pointer 0
+push pointer 0
+push constant 32
+call String.appendChar 2
+pop pointer 0
+push pointer 0
+push constant 32
+call String.appendChar 2
+pop pointer 0
+push pointer 0
+call Output.printString 1
+pop temp 0
+push temp 2
+pop pointer 0
+push local 0
+call Output.printInt 1
+pop temp 0
+call Output.println 0
+pop temp 0
+push local 0
+return
+function Math.divideAlgo 1
+push argument 1
+push argument 0
+gt
+not
+if-goto Math_divideAlgo_end_if_0
+push constant 0
+return
+goto Math_divideAlgo_end_if_0
+label Math_divideAlgo_end_if_0
+push argument 0
+push constant 2
+push argument 1
+call Math.multiply 2
+call Math.divideAlgo 2
+pop local 0
+push argument 0
+push constant 2
+push local 0
+push argument 1
+call Math.multiply 2
+call Math.multiply 2
+sub
+push argument 1
+lt
+not
+if-goto Math_divideAlgo_else_if_1
+push constant 2
+push local 0
+call Math.multiply 2
+return
+goto Math_divideAlgo_end_if_1
+label Math_divideAlgo_else_if_1
+push constant 2
+push local 0
+call Math.multiply 2
+push constant 1
+add
+return
+label Math_divideAlgo_end_if_1
+function Math.divide 2
+push constant 0
+pop local 0
+push argument 0
+push constant 0
+lt
+push argument 1
+push constant 0
+lt
+or
+not
+if-goto Math_divide_end_if_0
+push constant 1
+pop local 0
+goto Math_divide_end_if_0
+label Math_divide_end_if_0
+push argument 0
+push constant 0
+lt
+push argument 1
+push constant 0
+lt
+and
+not
+if-goto Math_divide_end_if_1
+push constant 0
+pop local 0
+goto Math_divide_end_if_1
+label Math_divide_end_if_1
+push argument 0
+call Math.abs 1
+pop argument 0
+push argument 1
+call Math.abs 1
+pop argument 1
+push argument 0
+push argument 1
+call Math.divideAlgo 2
+pop local 1
+push local 0
+push constant 1
+eq
+not
+if-goto Math_divide_end_if_2
+push local 1
+push constant 1
+neg
+call Math.multiply 2
+pop local 1
+goto Math_divide_end_if_2
+label Math_divide_end_if_2
+push local 1
+return
+function Math.sqrt 4
+push constant 16
+pop local 2
+push constant 0
+pop local 0
+push local 2
+push constant 2
+call Math.divide 2
+push constant 1
+sub
+pop local 1
+label Math_sqrt_loop_0
+push local 1
+push constant 0
+gt
+push local 1
+push constant 0
+eq
+or
+not
+if-goto Math_sqrt_Endloop_0
+push local 0
+push static 1
+push local 1
+add
+pop pointer 1
+push that 0
+add
+push local 0
+push static 1
+push local 1
+add
+pop pointer 1
+push that 0
+add
+call Math.multiply 2
+pop local 3
+push local 3
+push argument 0
+lt
+push local 3
+push argument 0
+eq
+or
+push local 3
+push constant 0
+gt
+push local 3
+push constant 0
+eq
+or
+and
+not
+if-goto Math_sqrt_end_if_1
+push local 0
+push static 1
+push local 1
+add
+pop pointer 1
+push that 0
+add
+pop local 0
+goto Math_sqrt_end_if_1
+label Math_sqrt_end_if_1
+push local 1
+push constant 1
+sub
+pop local 1
+goto Math_sqrt_loop_0
+label Math_sqrt_Endloop_0
+push local 0
+return
+function Math.max 1
+push argument 0
+pop local 0
+push argument 1
+push argument 0
+gt
+not
+if-goto Math_max_end_if_0
+push argument 1
+pop local 0
+goto Math_max_end_if_0
+label Math_max_end_if_0
+push local 0
+return
+push constant 0
+return
+function Math.min 1
+push argument 0
+pop local 0
+push argument 1
+push argument 0
+lt
+not
+if-goto Math_min_end_if_0
+push argument 1
+pop local 0
+goto Math_min_end_if_0
+label Math_min_end_if_0
+push local 0
+return
+function Math.abs 1
+push argument 0
+push constant 0
+lt
+not
+if-goto Math_abs_else_if_0
+push argument 0
+push argument 0
+push argument 0
+add
+sub
+pop local 0
+goto Math_abs_end_if_0
+label Math_abs_else_if_0
+push argument 0
+pop local 0
+label Math_abs_end_if_0
+push local 0
+return
