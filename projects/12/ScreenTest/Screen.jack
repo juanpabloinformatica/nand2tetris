@@ -1,0 +1,222 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/12/Screen.jack
+class Screen {
+
+  static boolean color;
+
+  /** Initializes the Screen. */
+  function void init() {
+    let color = true;
+    return;
+  }
+
+  /** Erases the entire screen. */
+  function void clearScreen() {
+    return;
+  }
+
+  /** Sets the current color, to be used for all subsequent drawXXX commands.
+   *  Black is represented by true, white by false. */
+  function void setColor(boolean b) {
+    let color = b;
+    return;
+  }
+
+  function void drawPixel(int x, int y) {
+    var int address;
+    var int ROW_CONSTANT;
+    var int INST_CONSTANT;
+    var int value;
+    var int tmp_bit_op;
+    var int ind_bit;
+    let ROW_CONSTANT = 32;
+    let INST_CONSTANT = 16;
+    let address = 16384 + ((ROW_CONSTANT * y) + (x/16));  
+    let value = Memory.peek(address);
+    let tmp_bit_op = x/16;
+    let ind_bit = (tmp_bit_op * 16) - x;
+    let value = value + ind_bit;
+    do Memory.poke(address,value);
+    return;
+  }
+
+  /** Draws a line from pixel (x1,y1) to pixel (x2,y2), using the current color. */
+  function void drawLine(int x1, int y1, int x2, int y2) {
+    /*is then y is decreasing*/
+    var int up;
+    /*is then y is increasing*/
+    var int down;
+    var int right;
+    var int left;
+    var int i;
+    var int j;
+    var int diff;
+
+
+    let  up = 0;
+    let  down = 0;
+    let  right = 0;
+    let  left = 0;
+
+
+    /*case 1*/
+    if((x1=x2)&(y1=y2)){
+      do drawPixel(x1,y1);
+    }
+    /*case 2*/
+    if( (x1 = x2) & (~(y1=y2)) ) {
+      if(y1>y2){
+        let down = y1 - y2;
+        let i = 1;
+        while((i<down) | (i=down)){
+          do drawPixel(x1,y1+i);
+          let i = i + 1;
+        }
+        /*case 3*/
+      }else{
+        let up =  y2 - y1;
+        let i = 1;
+        while( ( i < up ) | ( i = up) ){
+          do drawPixel(x1,(y1 - i));
+          let i = i + 1;
+        }
+      }
+    }
+    /*case 4*/
+    if( (y1 = y2) & (~(x1=x2))  ){
+      if(x1>x2){
+        let left = x1 - x2;
+        let i = 1;
+        while((i<left) | (i=left)){
+          do drawPixel((x1-i),y1);
+          let i = i + 1;
+        }
+        /*case 5*/
+      }else{
+        let right =  x2 - x1;
+        let i = 1;
+        while( ( i < right ) | ( i = right) ){
+          do drawPixel(x1 + i,y1);
+          let i = i + 1;
+        }
+      }
+    }
+    /*case 6 x1!=x2 && y1!=y2*/
+    if((x1>x2) & (y1>y2)){
+      let diff = 0;
+      let left = x1 - x2 ;
+      let up = y1 - y2 ;
+      let i = 1;
+      let j = 1;
+      /*for testing*/
+      while(((i<left)|(i=left))&((j<up)|(j=up))){
+        do drawPixel(x1 - i, y1 - j);
+        if(diff < 0){
+          let i = i + 1;
+          let diff = diff + up;
+        }else{
+          let j = j + 1;
+          let diff = diff - left;
+        }
+      }
+    }
+    /*case 7 x1!=x2 && y1!=y2*/
+    if((x1>x2) & (y1<y2)){
+      let diff = 0;
+      let left= x1 - x2 ;
+      let down = y2 - y1 ;
+      do Output.printInt(left);
+      do Output.println();
+      do Output.printInt(down);
+      let i = 1;
+      let j = 1;
+      while(((i<left)|(i=left))&((j<down)|(j=down))){
+        do drawPixel(x1 - i, y1 + j);
+        if(diff < 0){
+          let i = i + 1;
+          let diff = diff + down;
+        }else{
+          let j = j + 1;
+          let diff = diff - left;
+        }
+      }
+    }
+    /*case 8 x1!=x2 && y1!=y2*/
+    if((x1<x2) & (y1<y2)){
+      let diff = 0;
+      let right= x2 - x1 ;
+      let down = y2 - y1 ;
+      let i = 1;
+      let j = 1;
+      while(((i<right)|(i=right))&((j<down)|(j=down))){
+        do drawPixel(x1 + i, y1 + j);
+        if(diff < 0){
+          let i = i + 1;
+          let diff = diff + down;
+        }else{
+          let j = j + 1;
+          let diff = diff - right;
+        }
+      }
+    }
+    /*case 9 x1!=x2 && y1!=y2*/
+    if((x1<x2) & (y1>y2)){
+      let diff = 0;
+      let right = x2 - x1 ;
+      let up = y1 - y2 ;
+      let i = 1;
+      let j = 1;
+      while(((i<right)|(i=right))&((j<up)|(j=up))){
+        do drawPixel(x1 + i, y1 - j);
+        if(diff < 0){
+          let i = i + 1;
+          let diff = diff + up;
+        }else{
+          let j = j + 1;
+          let diff = diff - right;
+        }
+        let diff = (i*up) - (j*right);
+      }
+
+    }
+
+
+    return;
+  }
+
+  /** Draws a filled rectangle whose top left corner is (x1, y1)
+   *  and bottom right corner is (x2,y2), using the current color. */
+  function void drawRectangle(int x1, int y1, int x2, int y2) {
+    var int down;
+    var int i;
+    let down = y2-y1;
+    let i = 1;
+    while((i<down)|(i=down)){
+      do drawLine(x1,y1+i,x2,y1+i);
+      let i = i + 1;
+    }
+    return;
+
+  }
+
+  /** Draws a filled circle of radius r<=181 around (x,y), using the current color. */
+  function void drawCircle(int x, int y, int r) {
+    var int m;
+    var int t;
+    var int mExpression;
+    var int yprime;
+
+    let yprime = y;
+    let t = 1;
+    while( t < r){
+      let mExpression = (r*r) - ((r-t)*(r-t));
+      let m = Math.sqrt(mExpression);
+      do drawLine(x-m,(yprime-t),x+m,(yprime-t));
+      do drawLine(x-m,(yprime+t),x+m,(yprime+t));
+      let t = t + 1;
+    }
+    return;
+  }
+}
