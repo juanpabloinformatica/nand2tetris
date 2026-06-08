@@ -1,0 +1,67 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/12/Sys.jack
+
+/**
+ * A library that supports various program execution services.
+ */
+class Sys {
+
+    /** Performs all the initializations required by the OS. */
+    function void init() {
+      do Keyboard.init();
+      do Math.init();
+      do Memory.init();
+      do Output.init();
+      do Screen.init();
+      do Main.main();
+      do halt();
+      return;
+    }
+
+    /** Halts the program execution. */
+    function void halt() {
+      var int loopcondition;
+      let loopcondition = 1;
+      while(loopcondition=1){
+        let loopcondition=1;
+      }
+      return;
+    }
+
+    /** Waits approximately duration milliseconds and returns.  */
+    function void wait(int duration) {
+      /*
+00:04.0 Signal processing controller: Intel Corporation Xeon E3-1200 v5/E3-1500 v5/6th Gen Core Processor Thermal Subsystem (rev 0b)
+00:08.0 System peripheral: Intel Corporation Xeon E3-1200 v5/v6 / E3-1500 v5 / 6th/7th/8th Gen Core Processor Gaussian Mixture Model
+00:12.0 Signal processing controller: Intel Corporation Cannon Point-LP Thermal Controller (rev 30)
+00:14.0 USB controller: Intel Corporation Cannon Point-LP USB 3.1 xHCI Controller (rev 30)
+00:14.2 RAM memory: Intel Corporation Cannon Point-LP Shared SRAM (rev 30)
+00:1f.4 SMBus: Intel Corporation Cannon Point-LP SMBus Controller (rev 30)
+00:1f.5 Serial bus controller: Intel Corporation Cannon Point-LP SPI Controller (rev 30)
+04:00.0 Non-Volatile memory controller: Sandisk Corp PC SN520 x2 M.2 2230 NVMe SSD (rev 01)
+*/
+      var int WAIT_FACTOR;
+      var int durationCounter;
+      let WAIT_FACTOR=100;
+      let durationCounter = duration*WAIT_FACTOR;
+      while(durationCounter>0){
+        do Output.printInt(duration);
+        do Output.println();
+        let durationCounter = durationCounter -1;
+      }
+      return;
+
+    }
+
+    /** Displays the given error code in the form "ERR<errorCode>",
+     *  and halts the program's execution. */
+    function void error(int errorCode) {
+      do Output.printString("ERR");
+      do Output.printString("<");
+      do Output.printInt(errorCode);
+      do Output.printString(">");
+      return;
+    }
+}
