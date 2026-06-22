@@ -1,0 +1,31 @@
+function Main.main 1
+push constant 8001
+push constant 16
+push constant 1
+neg
+call Main.fillMemory 3 
+push constant 0
+return
+
+function Main.fillMemory 3 
+label loop1
+push argument 1
+push constant 0
+gt
+not
+if-goto endLoop
+push argument 0
+push argument 2
+call Memory.poke 2
+push argument 1
+push constant 1
+sub
+pop argument 1
+push  argument 0
+push constant 1
+add
+pop argument 0
+goto loop1
+label endLoop
+push constant 0
+return
