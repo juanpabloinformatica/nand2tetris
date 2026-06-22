@@ -7,11 +7,33 @@ class Screen {
   static boolean color;
 
   /** Initializes the Screen. */
+  static Array twoPower;
   function void init() {
     let color = true;
+    let twoPower =  Array.new(16);
+    do initTwoPower();
     return;
   }
 
+  function void initTwoPower(){
+    let twoPower[0] = 1;
+    let twoPower[1] = 2;
+    let twoPower[2] = 4;
+    let twoPower[3] = 8;
+    let twoPower[4] = 16;
+    let twoPower[5] = 32;
+    let twoPower[6] = 64;
+    let twoPower[7] = 128;
+    let twoPower[8] = 256;
+    let twoPower[9] = 512;
+    let twoPower[10] = 1024;
+    let twoPower[11] = 2048;
+    let twoPower[12] = 4096;
+    let twoPower[13] = 8192;
+    let twoPower[14] = 16384;
+    let twoPower[15] = -32767;
+    return;
+  }
   /** Erases the entire screen. */
   function void clearScreen() {
     return;
@@ -24,6 +46,7 @@ class Screen {
     return;
   }
 
+  /*x -> columns | y -> rows*/
   function void drawPixel(int x, int y) {
     var int address;
     var int ROW_CONSTANT;
@@ -35,10 +58,35 @@ class Screen {
     let INST_CONSTANT = 16;
     let address = 16384 + ((ROW_CONSTANT * y) + (x/16));  
     let value = Memory.peek(address);
-    let tmp_bit_op = x/16;
-    let ind_bit = (tmp_bit_op * 16) - x;
-    let value = value + ind_bit;
+    if(x > 15){
+      let tmp_bit_op = x/16;
+      let ind_bit = x - (tmp_bit_op * 16);
+    }else{
+      let ind_bit = x;
+    }
+    let ind_bit = twoPower[ind_bit]; 
+    if(color=true){
+      /*Buffer overflow*/
+      if (ind_bit = -32767){
+        let value = value | (ind_bit -1);
+      }else{
+        let value = value | ind_bit;
+      }
+    }else{
+      /*Buffer overflow*/
+      if (ind_bit = -32767){
+        let value = value & (~(ind_bit-1));
+      }else{
+       let value = value & (~(ind_bit));
+      }
+    }
     do Memory.poke(address,value);
+    if(x=190){
+    do Output.printString("VALUE: ");
+    do Output.printInt(value);
+    do Output.println();
+    }
+
     return;
   }
 
@@ -53,6 +101,7 @@ class Screen {
     var int i;
     var int j;
     var int diff;
+    var int test;
 
 
     let  up = 0;
@@ -69,17 +118,19 @@ class Screen {
     if( (x1 = x2) & (~(y1=y2)) ) {
       if(y1>y2){
         let down = y1 - y2;
-        let i = 1;
-        while((i<down) | (i=down)){
-          do drawPixel(x1,y1+i);
+        let i = 0;
+        while(i<down){
+          do drawPixel(x1,y1-i);
           let i = i + 1;
         }
         /*case 3*/
       }else{
         let up =  y2 - y1;
-        let i = 1;
-        while( ( i < up ) | ( i = up) ){
-          do drawPixel(x1,(y1 - i));
+        let i = 0;
+        while(  i < up   ){
+          do drawPixel(x1,(y2 - i));
+          do Output.println();
+          do Output.printInt(i);
           let i = i + 1;
         }
       }
@@ -87,20 +138,18 @@ class Screen {
     /*case 4*/
     if( (y1 = y2) & (~(x1=x2))  ){
       if(x1>x2){
-        let left = x1 - x2;
-        let i = 1;
-        while((i<left) | (i=left)){
-          do drawPixel((x1-i),y1);
-          let i = i + 1;
-        }
         /*case 5*/
+        let right = x1 - x2;
+        let test = x2;
       }else{
         let right =  x2 - x1;
-        let i = 1;
-        while( ( i < right ) | ( i = right) ){
-          do drawPixel(x1 + i,y1);
-          let i = i + 1;
-        }
+        let test = x1;
+      }
+      let i = 0;
+      while(  i < right   ){
+
+        do drawPixel(test + i,y1);
+        let i = i + 1;
       }
     }
     /*case 6 x1!=x2 && y1!=y2*/
@@ -127,9 +176,6 @@ class Screen {
       let diff = 0;
       let left= x1 - x2 ;
       let down = y2 - y1 ;
-      do Output.printInt(left);
-      do Output.println();
-      do Output.printInt(down);
       let i = 1;
       let j = 1;
       while(((i<left)|(i=left))&((j<down)|(j=down))){
@@ -192,8 +238,8 @@ class Screen {
     var int down;
     var int i;
     let down = y2-y1;
-    let i = 1;
-    while((i<down)|(i=down)){
+    let i = 0;
+    while((i<down)){
       do drawLine(x1,y1+i,x2,y1+i);
       let i = i + 1;
     }
@@ -209,12 +255,12 @@ class Screen {
     var int yprime;
 
     let yprime = y;
-    let t = 1;
-    while( t < r){
+    let t = 0;
+    while( (t < r) | ( t = r)){
       let mExpression = (r*r) - ((r-t)*(r-t));
       let m = Math.sqrt(mExpression);
-      do drawLine(x-m,(yprime-t),x+m,(yprime-t));
-      do drawLine(x-m,(yprime+t),x+m,(yprime+t));
+      do drawLine(x-m,((yprime-r)+t),x+m,((yprime-r)+t));
+      do drawLine(x-m,((yprime+r)-t),x+m,((yprime+r)-t));
       let t = t + 1;
     }
     return;
