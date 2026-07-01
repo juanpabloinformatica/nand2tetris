@@ -56,7 +56,7 @@ class Keyboard {
       while(~(pressedKey = 0)){
         let pressedKey = keyPressed();
       }
-      do Output.printChar(value);
+
       return value;
     }
 
@@ -74,11 +74,11 @@ class Keyboard {
       let ENTER_MAP = 128;
       let BSPACE_MAP = 129;
       let s = String.new(MAX_STRING_LENGTH);
-      do Output.printString(message);
+
       while(1=1){
         let gottenChar = readChar();
         if(gottenChar=ENTER_MAP){
-          do Output.println();
+
           return s;
         }
         if (gottenChar=BSPACE_MAP){
@@ -143,14 +143,14 @@ class Keyboard {
       let iterations = 0;
       let charToIntResult = 0;
 
-      do Output.printString("IN STRING_VALUE_TO_INT");
-      do Output.println();
-      do Output.printString("STRING RECEIVED:  ");
-      do Output.printString(stringValue);
-      do Output.println();
-      do Output.printString("STRING_LENGTH:  ");
-      do Output.printInt(stringValueLength);
-      do Output.println();
+
+
+
+
+
+
+
+
       //do Sys.halt();
 
       while( (i > 0) | (i = 0)){
@@ -165,8 +165,8 @@ class Keyboard {
               let TEN_FACTOR = TEN_FACTOR * 10;
             /*The same but doesn't matter*/
           }
-          do Output.printInt(sum);
-          do Output.println();
+
+
           return sum;
         }
         let charToIntResult = charToInt(stringValue.charAt(i));
@@ -202,13 +202,13 @@ class Keyboard {
       let BSPACE_MAP = 129;
       let s = String.new(MAX_STRING_LENGTH);
       /*For debuggin*/
-      do Output.printString(message);
-      do Output.println();
+
+
 
       while(1=1){
         let gottenChar = readChar();
         if(gottenChar=ENTER_MAP){
-          do Output.println();
+
           let value = stringValueToInt(s,stringValueLength);
           return value;
         }

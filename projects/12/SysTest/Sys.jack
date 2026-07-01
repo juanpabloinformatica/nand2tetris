@@ -10,11 +10,11 @@ class Sys {
 
     /** Performs all the initializations required by the OS. */
     function void init() {
-      do Keyboard.init();
-      do Math.init();
       do Memory.init();
-      do Output.init();
+      do Math.init();
       do Screen.init();
+      do Output.init();
+      do Keyboard.init();
       do Main.main();
       do halt();
       return;
@@ -47,8 +47,6 @@ class Sys {
       let WAIT_FACTOR=100;
       let durationCounter = duration*WAIT_FACTOR;
       while(durationCounter>0){
-        do Output.printInt(duration);
-        do Output.println();
         let durationCounter = durationCounter -1;
       }
       return;
@@ -58,10 +56,6 @@ class Sys {
     /** Displays the given error code in the form "ERR<errorCode>",
      *  and halts the program's execution. */
     function void error(int errorCode) {
-      do Output.printString("ERR");
-      do Output.printString("<");
-      do Output.printInt(errorCode);
-      do Output.printString(">");
       return;
     }
 }
